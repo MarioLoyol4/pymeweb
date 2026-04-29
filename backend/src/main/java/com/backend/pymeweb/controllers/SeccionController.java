@@ -39,4 +39,33 @@ public class SeccionController {
     public ResponseEntity<List<Seccion>> listarSeccionesPorConfig(@PathVariable Long idConfiguracion){
         return ResponseEntity.ok(seccionRepository.findAll());
     }
+
+//  PUT edita la seccion especifica
+    @PutMapping("/{idSeccion}")
+    public ResponseEntity<?> editarSeccion(@PathVariable Long idSeccion, @RequestBody Seccion seccionActualizada){
+        return seccionRepository.findById(idSeccion)
+                .map(seccion -> {
+                    seccion.setTipoSeccion(seccionActualizada.getTipoSeccion());
+                    seccion.setOrden(seccionActualizada.getOrden());
+                    seccion.setContenidoJson(seccionActualizada.getContenidoJson());
+                    seccion.setEsVisible(seccionActualizada.getEsVisible());
+                    Seccion guardada = seccionRepository.save(seccion);
+                    return ResponseEntity.ok(guardada);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+//  DELETE elimina la seccion por id
+    @DeleteMapping("/{idSeccion}")
+    public ResponseEntity<?> eliminarSeccion(@PathVariable Long idSeccion) {
+
+//      Se verifica que la seccion exista, se busca por id
+        if (seccionRepository.existsById(idSeccion)) {
+//          al verificar que existe, se borra
+            seccionRepository.deleteById(idSeccion);
+            return ResponseEntity.ok().body("Seccion eliminada correctamente");
+        } else {
+//          Si no existe se manda un error 404 not found
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

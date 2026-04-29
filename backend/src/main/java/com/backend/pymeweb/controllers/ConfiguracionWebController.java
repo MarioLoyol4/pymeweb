@@ -33,4 +33,18 @@ public class ConfiguracionWebController {
             return ResponseEntity.badRequest().body("Error: No se encontro un negocio con ID " + idNegocio);
         }
     }
+
+//  PUT edita la configuracion existente
+    @PutMapping("/{idConfiguracion}")
+    public ResponseEntity<?> editarConfiguracion(@PathVariable Long idConfiguracion, @RequestBody ConfiguracionWeb configActualizada){
+        return configuracionWebRepository.findById(idConfiguracion)
+                .map(config -> {
+                    config.setTemaGlobal(configActualizada.getTemaGlobal());
+                    config.setColorPrincipal(configActualizada.getColorPrincipal());
+                    config.setTipografia(configActualizada.getTipografia());
+                    ConfiguracionWeb guardada = configuracionWebRepository.save(config);
+                    return ResponseEntity.ok(guardada);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

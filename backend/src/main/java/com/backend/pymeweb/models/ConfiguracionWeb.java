@@ -19,7 +19,7 @@ public class ConfiguracionWeb {
 
     private String temaGlobal;
     private String colorPrincipal;
-    private String tipoGrafia;
+    private String tipografia;
 
     // relacion una a una, con el negocio
     @OneToOne
