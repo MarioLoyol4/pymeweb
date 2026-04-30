@@ -1,0 +1,69 @@
+.diseno-conocenos {
+    background-color: #ffffff;
+    padding: 40px 30px;
+}
+
+.conocenos-header h2 {
+    color: #3A666B;
+    margin: 0 0 15px 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.conocenos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.conocenos-card {
+    background: #f7fbfb;
+    border: 1px solid #e2ecec;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 6px 16px rgba(58, 102, 107, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    min-height: 200px;
+    text-align: center;
+}
+
+.conocenos-card-media {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: #e6f3f4;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conocenos-card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.conocenos-card-placeholder {
+    color: #3A666B;
+    font-weight: 700;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 10px;
+}
+
+.conocenos-card-body h3 {
+    margin: 2px 0 6px 0;
+    color: #1f2d2f;
+    font-size: 1.1rem;
+}
+
+.conocenos-card-body p {
+    margin: 0;
+    color: #5b6b6e;
+    line-height: 1.4;
+}

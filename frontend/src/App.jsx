@@ -1,11 +1,21 @@
-import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EditorWeb from './pages/EditorWeb';
+import PaginaPublica from './pages/PaginaPublica';
 
 function App() {
   return (
-    <div>
-      <EditorWeb />
-    </div>
+    <Router>
+      <Routes>
+        
+        <Route path="/editor" element={<EditorWeb />} />
+
+        
+        <Route path="/sitio/:id" element={<PaginaPublica />} />
+        
+        
+        <Route path="/" element={<PaginaPublica />} />
+      </Routes>
+    </Router>
   );
 }
 
