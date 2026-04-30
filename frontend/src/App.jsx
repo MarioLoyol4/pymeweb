@@ -10,10 +10,9 @@ function App() {
         <Route path="/editor" element={<EditorWeb />} />
 
         
-        <Route path="/sitio/:id" element={<PaginaPublica />} />
+        <Route path="/:nombreNegocio" element={<PaginaPublica />} />
         
         
-        <Route path="/" element={<PaginaPublica />} />
       </Routes>
     </Router>
   );

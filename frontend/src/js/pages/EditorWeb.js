@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { apiSaaS } from '../../services/api';
+import { useParams } from 'react-router-dom';
 
 const BOTON_LOGO = "LOGO";
 
@@ -118,8 +119,10 @@ export const useEditorWeb = () => {
     const dragItem = useRef();
     const dragOverItem = useRef();
 
+    const idMiUnicoNegocio = 1;
+
     const cargarDatos = async () => {
-        const datos = await apiSaaS.obtenerSecciones(1);
+        const datos = await apiSaaS.obtenerSecciones(idMiUnicoNegocio);
         setSecciones(datos);
 
         if (datos && datos.length > 0) {
@@ -274,7 +277,7 @@ export const useEditorWeb = () => {
             contenidoJson: JSON.stringify(contenidoBase)
         };
 
-        const respuesta = await apiSaaS.creaSeccion(1, nuevaSeccion);
+        const respuesta = await apiSaaS.creaSeccion(idMiUnicoNegocio, nuevaSeccion);
         if (respuesta) cargarDatos();
     };
 
