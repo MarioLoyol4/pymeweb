@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
+
+
+
+/* TITULO LAYOUT GENERAL DEL EDITOR */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* TITULO BARRA SUPERIOR */
+.top-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 15px 20px;
+    background-color: #ffffff;
+    border-bottom: 2px solid #eaeaea;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    z-index: 20;
+}
+
+/* TITULO BOTONES DE LA BARRA SUPERIOR */
+.btn-top-section {
+    background-color: #11C1C3;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: grab;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(17, 193, 195, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-top-section:hover {
+    background-color: #0ea8a9;
+    transform: translateY(-2px);
+}
+
+.btn-top-section:active {
+    cursor: grabbing;
+    transform: scale(0.95);
+}
+
+/* TITULO CONTENEDOR EDITOR */
+.editor-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* TITULO PANEL DE PREVISTA */
+.preview-panel {
+    width: 70%;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+/* TITULO CANVAS WEB */
+.web-canvas {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    overflow: hidden; 
+    font-family: 'Nunito', sans-serif; 
+}
+
+.empty-canvas-text {
+    padding: 20px;
+    color: #888;
+    text-align: center;
+}
+
+/* TITULO SECCION PREVIEW */
+.seccion-preview {
+    cursor: pointer;
+    border: 0;
+    outline: 3px solid transparent;
+    outline-offset: -3px;
+    transition: 0.2s;
+}
+
+.seccion-preview.seleccionada {
+    outline-color: #3A666B;
+}
+
+/* TITULO PANEL DE HERRAMIENTAS */
+.tools-panel {
+    width: 30%;
+    background: #ffffff;
+    border-left: 1px solid #e0e0e0;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.tools-title { color: #333; margin: 0; }
+.tools-divider { border: none; border-top: 1px solid #eee; margin: 20px 0; }
+.empty-selection-text { text-align: center; color: #888; margin-top: 40px; }
+.input-group { margin-bottom: 1.5rem; }
+.tools-label { color: #666; font-size: 0.9rem; display: block; margin-bottom: 8px; font-weight: 600; }
+.input-editor { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+.btn-guardar { width: 100%; padding: 12px; background-color: #F29F05; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; transition: 0.2s; margin-top: 20px; }
+.btn-guardar:hover { background-color: #d88e04; }
