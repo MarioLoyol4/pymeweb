@@ -1,21 +1,24 @@
 import React from 'react';
-import '../../styles/Barra_menu.css';
+import '../../styles/components/secciones/Barra_menu.css';
 import { Logo } from './Logo';
+import { normalizarBarraMenu } from '../../js/components/secciones/Barra_menu.js';
 
 export const BarraMenu = ({ contenido, logoContenido = null }) => {
-    const links = contenido.enlaces ? contenido.enlaces.split(',').map(l => l.trim()) : [];
-    const tieneLogo = Boolean(logoContenido);
+    const { links, tieneLogo } = normalizarBarraMenu(contenido, logoContenido);
 
     return (
+        // TITULO SECCION BARRA DE MENU
         <nav className="diseno-barramenu">
             {tieneLogo ? (
                 <Logo contenido={logoContenido} variant="inline" fallbackText={contenido.textoLogo} />
             ) : (
+                // TITULO TEXTO LOGO EN BARRA MENU
                 <h2 className="barramenu-logo-texto">
                     {contenido.textoLogo || "Mi Empresa"}
                 </h2>
             )}
 
+            {/* TITULO LINKS BARRA MENU */}
             <ul className="barramenu-links">
                 {links.map((link, index) => {
                     const idDestino = `#${link.replace(/ /g, '_').toUpperCase()}`;

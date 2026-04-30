@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import EditorWeb from './pages/EditorWeb';
+import EditorWeb from './pages/EditorWeb.jsx';
 import PaginaPublica from './pages/PaginaPublica';
 
 function App() {

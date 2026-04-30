@@ -1,3 +1,4 @@
+/* TITULO SECCION BARRA DE MENU */
 .diseno-barramenu {
     display: flex;
     justify-content: space-between;
@@ -7,6 +8,7 @@
     color: white;
 }
 
+/* TITULO TEXTO LOGO EN BARRA MENU */
 .barramenu-logo-texto {
     font-size: 1.5rem;
     font-weight: 800;
@@ -14,6 +16,7 @@
     letter-spacing: 1px;
 }
 
+/* TITULO LINKS BARRA MENU */
 .barramenu-links {
     list-style: none;
     display: flex;

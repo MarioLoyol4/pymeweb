@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap');
 
-/* src/styles/EditorWeb.css */
 
+
+/* TITULO LAYOUT GENERAL DEL EDITOR */
 .app-wrapper {
     display: flex;
     flex-direction: column;
@@ -10,7 +11,7 @@
     background-color: #f8f9fa;
 }
 
-/* --- BARRA SUPERIOR --- */
+/* TITULO BARRA SUPERIOR */
 .top-toolbar {
     display: flex;
     flex-wrap: wrap;
@@ -23,6 +24,7 @@
     z-index: 20;
 }
 
+/* TITULO BOTONES DE LA BARRA SUPERIOR */
 .btn-top-section {
     background-color: #11C1C3;
     color: white;
@@ -47,20 +49,21 @@
     transform: scale(0.95);
 }
 
-/* --- ZONA DE TRABAJO --- */
+/* TITULO CONTENEDOR EDITOR */
 .editor-container {
     display: flex;
     flex: 1;
     overflow: hidden;
 }
 
-/* --- LADO IZQUIERDO (VISTA PREVIA) --- */
+/* TITULO PANEL DE PREVISTA */
 .preview-panel {
     width: 70%;
     padding: 2rem;
     overflow-y: auto;
 }
 
+/* TITULO CANVAS WEB */
 .web-canvas {
     background: #ffffff;
     border-radius: 8px;
@@ -75,17 +78,20 @@
     text-align: center;
 }
 
+/* TITULO SECCION PREVIEW */
 .seccion-preview {
     cursor: pointer;
-    border: 3px solid transparent;
+    border: 0;
+    outline: 3px solid transparent;
+    outline-offset: -3px;
     transition: 0.2s;
 }
 
 .seccion-preview.seleccionada {
-    border: 3px solid #3A666B;
+    outline-color: #3A666B;
 }
 
-/* --- LADO DERECHO (HERRAMIENTAS) --- */
+/* TITULO PANEL DE HERRAMIENTAS */
 .tools-panel {
     width: 30%;
     background: #ffffff;

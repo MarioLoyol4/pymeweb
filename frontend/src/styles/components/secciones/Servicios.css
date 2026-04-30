@@ -1,0 +1,202 @@
+/* TITULO SECCION SERVICIOS */
+.diseno-servicios {
+    background-color: #ffffff;
+    padding: 40px 30px;
+}
+
+/* TITULO HEADER SECCION */
+.servicios-header h2 {
+    color: #3A666B;
+    margin: 0 0 10px 0;
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-align: center;
+}
+
+.servicios-header p {
+    margin: 0 0 20px 0;
+    color: #5b6b6e;
+    max-width: 680px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* TITULO CONTENEDOR TARJETAS */
+.servicios-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.servicios-track {
+    --servicios-gap: 22px;
+    --servicios-por-vista: 4;
+    display: flex;
+    gap: var(--servicios-gap);
+    overflow-x: auto;
+    padding: 8px 0 14px;
+    justify-content: flex-start;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-padding-left: 0;
+    scrollbar-width: thin;
+    scrollbar-color: #d5e4ea transparent;
+}
+
+.servicios-track::-webkit-scrollbar {
+    height: 8px;
+}
+
+.servicios-track::-webkit-scrollbar-thumb {
+    background: #d5e4ea;
+    border-radius: 999px;
+}
+
+/* TITULO TARJETAS */
+.servicio-card {
+    background: #ffffff;
+    border: 1px solid #d9e6f2;
+    border-radius: 14px;
+    box-shadow: 0 10px 24px rgba(43, 75, 85, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 320px;
+    text-align: left;
+    width: calc((100% - (var(--servicios-gap) * (var(--servicios-por-vista) - 1))) / var(--servicios-por-vista));
+    min-width: 0;
+    flex: 0 0 auto;
+    overflow: hidden;
+    scroll-snap-align: start;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-sizing: border-box;
+}
+
+.servicio-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(43, 75, 85, 0.16);
+    border-color: #9fb9dd;
+}
+
+.servicio-card--1 {
+    border-color: #e8d9c7;
+}
+
+.servicio-card--2 {
+    border-color: #d7dff7;
+}
+
+.servicio-media {
+    width: 100%;
+    height: 180px;
+    background: #eef4f7;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.servicio-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.servicio-media-placeholder {
+    color: #3A666B;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-align: center;
+    padding: 10px;
+}
+
+/* TITULO CUERPO TARJETA */
+.servicio-body {
+    padding: 0 18px 20px;
+    text-align: center;
+}
+
+.servicio-body h3 {
+    margin: 6px 0 8px 0;
+    color: #0f3b66;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.servicio-body p {
+    margin: 0;
+    color: #5b6b6e;
+    line-height: 1.5;
+}
+
+.servicios-controles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.servicios-flecha {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #9fb9dd;
+    background: #ffffff;
+    color: #2d5f90;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.servicios-flecha:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #f0f6ff;
+}
+
+.servicios-flecha:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.servicios-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.servicio-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: #cfd7df;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.servicio-dot.activo {
+    width: 10px;
+    height: 10px;
+    background: #f4b000;
+    transform: scale(1.1);
+}
+
+@media (max-width: 960px) {
+    .servicios-track {
+        --servicios-por-vista: 2;
+    }
+}
+
+@media (max-width: 640px) {
+    .diseno-servicios {
+        padding: 32px 20px;
+    }
+
+    .servicios-track {
+        --servicios-por-vista: 1;
+    }
+}

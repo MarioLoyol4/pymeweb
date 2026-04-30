@@ -1,8 +1,10 @@
+/* TITULO SECCION ACERCA DE NOSOTROS */
 .diseno-conocenos {
     background-color: #ffffff;
     padding: 40px 30px;
 }
 
+/* TITULO HEADER SECCION */
 .conocenos-header h2 {
     color: #3A666B;
     margin: 0 0 15px 0;
@@ -10,14 +12,17 @@
     font-weight: 800;
 }
 
+/* TITULO CONTENEDOR TARJETAS */
 .conocenos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 320px));
     gap: 20px;
+    justify-content: center;
 }
 
+/* TITULO TARJETAS */
 .conocenos-card {
-    background: #f7fbfb;
+    background: #8c9999;
     border: 1px solid #e2ecec;
     border-radius: 14px;
     padding: 16px;
@@ -28,6 +33,7 @@
     align-items: center;
     min-height: 200px;
     text-align: center;
+    width: 100%;
 }
 
 .conocenos-card-media {
@@ -56,14 +62,14 @@
     padding: 10px;
 }
 
+/* TITULO CUERPO TARJETA */
 .conocenos-card-body h3 {
     margin: 2px 0 6px 0;
     color: #1f2d2f;
     font-size: 1.1rem;
 }
-
 .conocenos-card-body p {
     margin: 0;
-    color: #5b6b6e;
+    color: #d8e9e9;
     line-height: 1.4;
 }
