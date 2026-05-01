@@ -190,6 +190,37 @@ export const useEditorWeb = () => {
         } else {
             setServiciosEdicion([]);
         }
+        if (seccion.tipoSeccion === 'CONTACTO') {
+            const camposContacto = {
+                titulo: 'Contacto',
+                descripcion: '',
+                telefono: '',
+                email: '',
+                direccion: '',
+                whatsapp: '',
+                horario: '',
+                mapaUrl: ''
+            };
+
+            Object.entries(camposContacto).forEach(([campo, valor]) => {
+                if (!Object.prototype.hasOwnProperty.call(datos, campo)) {
+                    datos[campo] = valor;
+                }
+            });
+        }
+        if (seccion.tipoSeccion === 'REDES_SOCIALES') {
+            const camposRedes = {
+                facebook: 'https://facebook.com/miempresa',
+                instagram: 'https://instagram.com/miempresa',
+                whatsapp: '+56 9 1111 1111'
+            };
+
+            Object.entries(camposRedes).forEach(([campo, valor]) => {
+                if (!Object.prototype.hasOwnProperty.call(datos, campo)) {
+                    datos[campo] = valor;
+                }
+            });
+        }
         setDatosEdicion(datos);
     };
 
@@ -275,6 +306,21 @@ export const useEditorWeb = () => {
             descripcion: "Lo que ofrecemos",
             servicios: "Servicio 1, Servicio 2, Servicio 3"
         };
+        if (tipoFormateado === 'CONTACTO') contenidoBase = {
+            titulo: "Contacto",
+            descripcion: "Escribenos para ayudarte.",
+            telefono: "+56 9 1111 1111",
+            email: "contacto@miempresa.cl",
+            direccion: "Av. Principal 123",
+            horario: "Lun a Vie 9:00 - 18:00",
+            whatsapp: "+56 9 1111 1111",
+            mapaUrl: ""
+        };
+        if (tipoFormateado === 'REDES_SOCIALES') contenidoBase = {
+            facebook: "https://facebook.com/miempresa",
+            instagram: "https://instagram.com/miempresa",
+            whatsapp: "+56 9 1111 1111"
+        };
 
         const nuevaSeccion = {
             tipoSeccion: tipoFormateado,
@@ -321,6 +367,7 @@ export const useEditorWeb = () => {
     const combinarLogoEnMenu = Boolean(logoSeccion && barraMenuSeccion);
 
     return {
+        negocioId,
         seccionSeleccionada,
         datosEdicion,
         tarjetasEdicion,

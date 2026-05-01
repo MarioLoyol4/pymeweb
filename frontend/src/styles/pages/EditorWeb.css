@@ -49,6 +49,31 @@
     transform: scale(0.95);
 }
 
+.btn-view-public {
+    background-color: #3A666B;
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(58, 102, 107, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-view-public:hover:not(:disabled) {
+    background-color: #2f555a;
+    transform: translateY(-2px);
+}
+
+.btn-view-public:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* TITULO CONTENEDOR EDITOR */
 .editor-container {
     display: flex;

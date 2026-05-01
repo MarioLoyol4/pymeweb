@@ -1,10 +1,12 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { RenderizadorSeccion } from '../components/RenderizadorSeccion';
 import { useEditorWeb } from '../js/pages/EditorWeb.js';
 import '../styles/pages/EditorWeb.css';
 
 const EditorWeb = () => {
     const {
+        negocioId,
         seccionSeleccionada,
         datosEdicion,
         tarjetasEdicion,
@@ -28,6 +30,13 @@ const EditorWeb = () => {
         barraMenuSeccion,
         combinarLogoEnMenu
     } = useEditorWeb();
+
+    const navigate = useNavigate();
+
+    const irPaginaPublica = () => {
+        if (!negocioId) return;
+        navigate(`/p/${negocioId}`);
+    };
 
     return (
         // TITULO LAYOUT GENERAL DEL EDITOR
@@ -57,6 +66,14 @@ const EditorWeb = () => {
                         </button>
                     );
                 })}
+                <button
+                    type="button"
+                    className="btn-view-public"
+                    onClick={irPaginaPublica}
+                    disabled={!negocioId}
+                >
+                    VER PAGINA
+                </button>
             </div>
 
             {/* TITULO CONTENEDOR EDITOR */}

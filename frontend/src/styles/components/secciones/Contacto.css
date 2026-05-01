@@ -1,0 +1,106 @@
+/* TITULO SECCION CONTACTO */
+.diseno-contacto {
+    background: #f7fbfc;
+    padding: 56px 36px;
+    border-top: 1px solid #dce8ec;
+}
+
+.contacto-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.contacto-header h2 {
+    color: #3A666B;
+    margin: 0 0 10px 0;
+    font-size: 1.9rem;
+    font-weight: 800;
+}
+
+.contacto-header p {
+    margin: 0 auto;
+    color: #5b6b6e;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.contacto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.contacto-datos {
+    background: #ffffff;
+    border: 1px solid #d7e5e8;
+    border-radius: 16px;
+    padding: 24px;
+    display: grid;
+    gap: 16px;
+    box-shadow: 0 8px 20px rgba(58, 102, 107, 0.08);
+}
+
+.contacto-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.contacto-etiqueta {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.7rem;
+    color: #7a8e92;
+    font-weight: 700;
+}
+
+.contacto-valor {
+    color: #1f2d2f;
+    font-weight: 600;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.contacto-valor:hover {
+    color: #0ea8a9;
+}
+
+.contacto-mapa {
+    min-height: 280px;
+    background: #ffffff;
+    border: 1px solid #d7e5e8;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(58, 102, 107, 0.08);
+}
+
+.contacto-mapa iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+.contacto-mapa--invalido {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #fff5ec;
+    border-color: #f0c6a2;
+}
+
+.contacto-mapa-mensaje {
+    color: #8a4b00;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.5;
+}
+
+@media (max-width: 640px) {
+    .diseno-contacto {
+        padding: 40px 20px;
+    }
+}
