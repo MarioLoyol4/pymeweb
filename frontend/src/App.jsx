@@ -1,18 +1,25 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import EditorWeb from './pages/EditorWeb.jsx';
 import PaginaPublica from './pages/PaginaPublica';
+import Login from './pages/Login.jsx';
+import Registro from './pages/Registro.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   return (
     <Router>
       <Routes>
-        
-        <Route path="/editor" element={<EditorWeb />} />
-
-        
-        <Route path="/:nombreNegocio" element={<PaginaPublica />} />
-        
-        
+        <Route path="/login" element={<Login />} />
+        <Route path="/registro" element={<Registro />} />
+        <Route
+          path="/editor"
+          element={(
+            <ProtectedRoute>
+              <EditorWeb />
+            </ProtectedRoute>
+          )}
+        />
+        <Route path="/p/:idNegocio" element={<PaginaPublica />} />
       </Routes>
     </Router>
   );

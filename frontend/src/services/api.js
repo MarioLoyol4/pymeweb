@@ -1,35 +1,47 @@
-import { act } from "react";
+import apiClient from './apiClient';
 
-const API_URL = 'http://localhost:8080/api';
+const normalizarSecciones = (data) => {
+    if (Array.isArray(data)) {
+        return data;
+    }
+
+    if (data?.data && Array.isArray(data.data)) {
+        return data.data;
+    }
+
+    if (data?.secciones && Array.isArray(data.secciones)) {
+        return data.secciones;
+    }
+
+    if (data?.content && Array.isArray(data.content)) {
+        return data.content;
+    }
+
+    if (data?._embedded?.secciones && Array.isArray(data._embedded.secciones)) {
+        return data._embedded.secciones;
+    }
+
+    return [];
+};
 
 export const apiSaaS = {
-    obtenerSecciones: async (idConfiguracion) => {
+    obtenerSeccionesPorNegocio: async (negocioId) => {
         try {
-            const respuesta = await fetch(`${API_URL}/secciones/configuracion/${idConfiguracion}`);
-            if (!respuesta.ok) {
-                throw new Error('Error al obtener las secciones');
-            }
-            return await respuesta.json();
-           
+            const { data } = await apiClient.get(`/secciones/negocio/${negocioId}`);
+            return normalizarSecciones(data);
         } catch (error) {
             console.error('Error en la API:', error);
             return [];
         }
     },
 
-    creaSeccion: async (idConfiguracion,datosNuevaSeccion) => {
+    creaSeccion: async (negocioId,datosNuevaSeccion) => {
         try {
-            const respuesta = await fetch(`${API_URL}/secciones/configuracion/${idConfiguracion}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datosNuevaSeccion)
-            });
-            if (!respuesta.ok) {
-                throw new Error('Error al crear la sección');
-            }
-            return await respuesta.json();
+            const { data } = await apiClient.post(
+                `/secciones/negocio/${negocioId}`,
+                datosNuevaSeccion
+            );
+            return data;
         } catch (error) {
             console.error('Error en la API:', error);
             return null;
@@ -38,17 +50,8 @@ export const apiSaaS = {
 
     actualizarSeccion: async (idSeccion, datosActualizados) => {
         try {
-            const respuesta = await fetch(`${API_URL}/secciones/${idSeccion}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(datosActualizados)
-            });
-            if (!respuesta.ok) {
-                throw new Error('Error al actualizar la sección');
-            }
-            return await respuesta.json();
+            const { data } = await apiClient.put(`/secciones/${idSeccion}`, datosActualizados);
+            return data;
         } catch (error) {
             console.error('Error en la API:', error);
             return null;

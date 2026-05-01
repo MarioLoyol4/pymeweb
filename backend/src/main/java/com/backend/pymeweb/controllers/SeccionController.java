@@ -21,6 +21,21 @@ public class SeccionController {
     @Autowired
     private ConfiguracionWebRepository configuracionWebRepository;
 
+    @PostMapping("/negocio/{idNegocio}")
+    public ResponseEntity<?> crearSeccionParaNegocio(@PathVariable Long idNegocio,@RequestBody Seccion nuevaSeccion){
+        Optional<ConfiguracionWeb> configOpt = configuracionWebRepository.buscarPorIdNegocio(idNegocio);
+
+        if (configOpt.isEmpty()){
+            return ResponseEntity.badRequest().body("Error el negocio no tiene una configuracion web asignada.");
+        }
+
+        nuevaSeccion.setConfiguracionWeb(configOpt.get());
+
+        Seccion seccionGuardada = seccionRepository.save(nuevaSeccion);
+
+        return ResponseEntity.ok(seccionGuardada);
+    }
+
     @PostMapping("/configuracion/{idConfiguracion}")
     public ResponseEntity<?> crearSeccion(@PathVariable Long idConfiguracion, @RequestBody Seccion nuevaSeccion){
 
@@ -67,5 +82,15 @@ public class SeccionController {
 //          Si no existe se manda un error 404 not found
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/negocio/{idNegocio}")
+    public ResponseEntity<List<Seccion>> obtenerSeccionesPorNegocio(@PathVariable Long idNegocio){
+        List<Seccion> secciones = seccionRepository.obtenerSeccionesPorNegocio(idNegocio);
+
+        if (secciones.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(secciones);
     }
 }

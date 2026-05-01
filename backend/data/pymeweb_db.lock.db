@@ -1,6 +1,6 @@
 #FileLock
-#Thu Apr 30 14:34:57 CLT 2026
+#Fri May 01 18:30:29 CLT 2026
 hostName=DESKTOP-IJO8I5B
-id=19ddfac323599f1fdbd1aee3042d8bc3874a439b509
+id=19de5aa30e5a12a33248212bcdb0e87c68105db3ceb
 method=file
-server=192.168.1.12\:53973
+server=192.168.1.12\:50431

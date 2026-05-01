@@ -200,7 +200,7 @@ public class AuthController {
     }
 
 
-    
+
 
     @PostMapping("/login")
     public ResponseEntity<?> crearTokenAutenticacion(@RequestBody LoginRequest request) throws Exception{
@@ -213,7 +213,16 @@ public class AuthController {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        final String jwt = jwtUtil.generateToken(userDetails.getUsername());
+
+        Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Negocio negocio = negocioRepository.findByUsuario(usuario)
+                .orElseThrow(() -> new RuntimeException("Este usuario no tiene un negocio asociado"));
+
+        Long idDelNegocio = negocio.getIdNegocio();
+
+
+        final String jwt = jwtUtil.generateToken(userDetails.getUsername(), idDelNegocio);
 
         return ResponseEntity.ok(new AuthResponse(jwt));
     }

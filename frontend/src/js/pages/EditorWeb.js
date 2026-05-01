@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { apiSaaS } from '../../services/api';
-import { useParams } from 'react-router-dom';
+import { getNegocioId } from '../../services/authService';
 
 const BOTON_LOGO = "LOGO";
 
@@ -119,15 +119,21 @@ export const useEditorWeb = () => {
     const dragItem = useRef();
     const dragOverItem = useRef();
 
-    const idMiUnicoNegocio = 1;
+    const negocioId = getNegocioId();
 
     const cargarDatos = async () => {
-        const datos = await apiSaaS.obtenerSecciones(idMiUnicoNegocio);
-        setSecciones(datos);
+        if (!negocioId) {
+            setSecciones([]);
+            return;
+        }
 
-        if (datos && datos.length > 0) {
+        const datos = await apiSaaS.obtenerSeccionesPorNegocio(negocioId);
+        const datosArray = Array.isArray(datos) ? datos : [];
+        setSecciones(datosArray);
+
+        if (datosArray.length > 0) {
             setBotonesSuperiores((prev) => {
-                const nombresEnUso = [...datos]
+                const nombresEnUso = [...datosArray]
                     .sort((a, b) => a.orden - b.orden)
                     .map((s) => obtenerLabelBoton(s.tipoSeccion));
 
@@ -157,7 +163,7 @@ export const useEditorWeb = () => {
         }
     };
 
-    useEffect(() => { cargarDatos(); }, []);
+    useEffect(() => { cargarDatos(); }, [negocioId]);
 
     const seleccionarSeccion = (seccion) => {
         setSeccionSeleccionada(seccion);
@@ -260,14 +266,14 @@ export const useEditorWeb = () => {
         const tipoFormateado = obtenerTipoSeccion(nombreBoton);
 
         let contenidoBase = { titulo: `Nueva sección: ${nombreBoton}` };
-        if (tipoFormateado === 'LOGO') contenidoBase = { urlImagen: "", nombreEmpresa: "Mi Pyme" };
-        if (tipoFormateado === 'CABECERA') contenidoBase = { titulo: "¡Bienvenidos!", subtitulo: "Cuidamos a tus mascotas.", imagenFondo: "" };
-        if (tipoFormateado === 'ACERCA_DE_NOSOTROS') contenidoBase = { titulo: "Conócenos", nombre: "Dra. Javiera Pérez", descripcion: "Médico veterinaria.", foto: "" };
-        if (tipoFormateado === 'BARRA_MENU') contenidoBase = { enlaces: "Inicio, Nosotros, Contacto" };
+        if (tipoFormateado === 'LOGO') contenidoBase = { urlImagen: "", nombreEmpresa: "Mi negocio" };
+        if (tipoFormateado === 'CABECERA') contenidoBase = { titulo: "Bienvenidos", subtitulo: "Tu mensaje principal aqui.", imagenFondo: "" };
+        if (tipoFormateado === 'ACERCA_DE_NOSOTROS') contenidoBase = { titulo: "Sobre nosotros", nombre: "Nuestro equipo", descripcion: "Breve descripcion de tu empresa.", foto: "" };
+        if (tipoFormateado === 'BARRA_MENU') contenidoBase = { enlaces: "Inicio, Servicios, Contacto" };
         if (tipoFormateado === 'SERVICIOS') contenidoBase = {
             titulo: "Servicios",
             descripcion: "Lo que ofrecemos",
-            servicios: "Consulta, Vacunacion, Urgencias"
+            servicios: "Servicio 1, Servicio 2, Servicio 3"
         };
 
         const nuevaSeccion = {
@@ -277,7 +283,9 @@ export const useEditorWeb = () => {
             contenidoJson: JSON.stringify(contenidoBase)
         };
 
-        const respuesta = await apiSaaS.creaSeccion(idMiUnicoNegocio, nuevaSeccion);
+        if (!negocioId) return;
+
+        const respuesta = await apiSaaS.creaSeccion(negocioId, nuevaSeccion);
         if (respuesta) cargarDatos();
     };
 
