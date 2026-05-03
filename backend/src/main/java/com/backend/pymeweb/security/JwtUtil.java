@@ -47,9 +47,10 @@ public class JwtUtil {
     }
 
 //  genera un nuevo token al hacer login
-    public String generateToken (String username) {
+    public String generateToken (String username, Long negocioId) {
         return Jwts.builder()
                 .setSubject(username)
+                .claim("negocioId", negocioId)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
