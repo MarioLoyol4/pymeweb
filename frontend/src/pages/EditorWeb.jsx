@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RenderizadorSeccion } from '../components/RenderizadorSeccion';
 import { useEditorWeb } from '../js/pages/EditorWeb.js';
+import { logout } from '../services/authService';
 import '../styles/pages/EditorWeb.css';
 
 const EditorWeb = () => {
@@ -36,6 +37,11 @@ const EditorWeb = () => {
     const irPaginaPublica = () => {
         if (!negocioId) return;
         navigate(`/p/${negocioId}`);
+    };
+
+    const manejarCerrarSesion = () => {
+        logout();
+        navigate('/login');
     };
 
     return (
@@ -73,6 +79,13 @@ const EditorWeb = () => {
                     disabled={!negocioId}
                 >
                     VER PAGINA
+                </button>
+                <button
+                    type="button"
+                    className="btn-logout"
+                    onClick={manejarCerrarSesion}
+                >
+                    CERRAR SESION
                 </button>
             </div>
 

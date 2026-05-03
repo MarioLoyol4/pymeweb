@@ -74,6 +74,25 @@
     transform: none;
 }
 
+.btn-logout {
+    background-color: #d64545;
+    color: #ffffff;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(214, 69, 69, 0.2);
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #c03d3d;
+    transform: translateY(-2px);
+}
+
 /* TITULO CONTENEDOR EDITOR */
 .editor-container {
     display: flex;
