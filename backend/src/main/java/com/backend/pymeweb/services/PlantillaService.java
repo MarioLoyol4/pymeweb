@@ -7,10 +7,10 @@ import com.backend.pymeweb.models.Seccion;
 import com.backend.pymeweb.repositories.ConfiguracionWebRepository;
 import com.backend.pymeweb.repositories.PlantillaBaseRepository;
 import com.backend.pymeweb.repositories.SeccionRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,48 +29,59 @@ public class PlantillaService {
     private ConfiguracionWebRepository configuracionWebRepository;
 
     public void generarPlantillaInicial(Negocio negocio, String tipoRubro) {
-
-        PlantillaBase plantilla = plantillaBaseRepository.findByTipoRubro(tipoRubro.toLowerCase())
-                .orElseGet(() -> plantillaBaseRepository.findByTipoRubro("generico")
-                        .orElseThrow(() -> new RuntimeException("Error critico, no existe plantilla generica en la BD.")));
-
-        ConfiguracionWeb config = configuracionWebRepository.buscarPorIdNegocio(negocio.getIdNegocio())
-                .orElseGet(() -> {
-                    ConfiguracionWeb nuevaConfig = new ConfiguracionWeb();
-                    nuevaConfig.setNegocio(negocio);
-                    return nuevaConfig;
-                });
-        configuracionWebRepository.save(config);
-
         try {
-            ObjectMapper mapper = new ObjectMapper();
 
-            List<Map<String, Object>> listaSecciones = mapper.readValue(
-                    plantilla.getContenidoJson(),
+            PlantillaBase plantilla = plantillaBaseRepository.findByTipoRubro(tipoRubro)
+                    .orElseThrow(() -> new RuntimeException("No hay plantilla para: " + tipoRubro));
+
+
+            ConfiguracionWeb config = configuracionWebRepository.buscarPorIdNegocio(negocio.getIdNegocio())
+                    .orElseThrow(() -> new RuntimeException("Configuracion web no encontrada"));
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonCrudo = plantilla.getContenidoJson();
+
+
+            if (jsonCrudo.startsWith("\"") && jsonCrudo.endsWith("\"")) {
+                jsonCrudo = jsonCrudo.substring(1, jsonCrudo.length() - 1);
+                jsonCrudo = jsonCrudo.replace("\\\"", "\"");
+            }
+
+
+            List<Map<String, Object>> seccionesBase = mapper.readValue(
+                    jsonCrudo,
                     new TypeReference<List<Map<String, Object>>>() {}
             );
 
-            List<Seccion> seccionesAGuardar = new ArrayList<>();
+            List<Seccion> seccionesAInsertar = new ArrayList<>();
             int orden = 1;
 
-            for (Map<String, Object> secData : listaSecciones){
-                Seccion s = new Seccion();
-                s.setConfiguracionWeb(config);
-                s.setTipoSeccion((String) secData.get("tipoSeccion"));
-                s.setOrden(orden++);
-                s.setEsVisible(true);
 
-                String contenidoInterior = mapper.writeValueAsString(secData.get("contenido"));
+            for (Map<String, Object> base : seccionesBase) {
+                Seccion nuevaSeccion = new Seccion();
+                nuevaSeccion.setConfiguracionWeb(config);
+                nuevaSeccion.setTipoSeccion((String) base.get("tipoSeccion"));
+                nuevaSeccion.setOrden(orden++);
+                nuevaSeccion.setEsVisible(true);
 
-                contenidoInterior = contenidoInterior.replace("{{NOMBRE_NEGOCIO}}", negocio.getNombreNegocio());
 
-                s.setContenidoJson(contenidoInterior);
-                seccionesAGuardar.add(s);
+                Object contenidoObj = base.get("contenido");
+                String contenidoString = mapper.writeValueAsString(contenidoObj);
+
+
+                contenidoString = contenidoString.replace("{{NOMBRE_NEGOCIO}}", negocio.getNombreNegocio());
+
+                nuevaSeccion.setContenidoJson(contenidoString);
+                seccionesAInsertar.add(nuevaSeccion);
             }
 
-            seccionRepository.saveAll(seccionesAGuardar);
+            // 6. ¡GUARDAR TODO EN LA BASE DE DATOS!
+            seccionRepository.saveAll(seccionesAInsertar);
+            System.out.println("Plantilla generada con éxito para el negocio: " + negocio.getNombreNegocio());
+
         } catch (Exception e) {
-            System.err.println("Error al procesar el JSON de la plantilla: " + e.getMessage());
+            System.err.println("Error al procesar la plantilla: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

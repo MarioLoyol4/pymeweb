@@ -22,7 +22,7 @@ export const useRegistro = () => {
     password: '',
     nombreNegocio: '',
     tipoRubro: '',
-    templateId: 'rustic'
+    templateId: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

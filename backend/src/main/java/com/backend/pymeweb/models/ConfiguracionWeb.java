@@ -21,6 +21,9 @@ public class ConfiguracionWeb {
     private String colorPrincipal;
     private String tipografia;
 
+    @Column(name = "habilitar_inventario", nullable = false)
+    private boolean habilitarInventario = false;
+
     // relacion una a una, con el negocio
     @OneToOne
     @JoinColumn(name = "id_negocio", nullable = false)
