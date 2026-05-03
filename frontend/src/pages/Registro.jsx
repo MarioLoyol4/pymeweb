@@ -107,34 +107,25 @@ const Registro = () => {
                 <label className="auth-label" htmlFor="tipoRubro">
                   Tipo de rubro
                 </label>
-                <input
-                  className="auth-input"
-                  id="tipoRubro"
-                  name="tipoRubro"
-                  type="text"
+
+                <select
+                  className='auth-select'
+                  id='tipoRubro'
+                  name='tipoRubro'
                   value={form.tipoRubro}
                   onChange={manejarCambio}
-                  placeholder="Restaurante, mascotas, abogados..."
-                  required
-                />
-                <label className="auth-label" htmlFor="templateId">
-                  Template inicial
-                </label>
-                <select
-                  className="auth-select"
-                  id="templateId"
-                  name="templateId"
-                  value={form.templateId}
-                  onChange={manejarCambio}
                 >
-                  <option value="classic">Classic (Abogados)</option>
-                  <option value="modern">Modern (Mascotas)</option>
-                  <option value="rustic">Rustic (Restaurante)</option>
+                  <option value="" disabled>Selecciona un rubro</option>
+                  <option value="abogados">Abogados</option>
+                  <option value="mascotas">Mascotas</option>
+                  <option value="restaurante">Restaurante</option>
+                  <option value="generico">Comenzar en blanco</option>
                 </select>
+
                 <div className="auth-summary">
                   <span>Negocio: {form.nombreNegocio || 'Por definir'}</span>
                   <span>Rubro: {form.tipoRubro || 'Por definir'}</span>
-                  <span>Template: {form.templateId}</span>
+                  
                 </div>
                 <div className="auth-actions">
                   <button className="auth-button secondary" type="button" onClick={retroceder}>
