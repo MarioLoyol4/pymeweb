@@ -5,6 +5,7 @@ import { BarraMenu } from '../../components/secciones/Barra_menu';
 import { Servicios } from '../../components/secciones/Servicios';
 import { Contacto } from '../../components/secciones/Contacto';
 import { Redes_sociales } from '../../components/secciones/Redes_sociales';
+import { Productos } from '../../components/secciones/Productos';
 
 export const resolverRenderizadoSeccion = (tipoSeccion, contenidoJson, logoContenidoJson = null) => {
     const contenido = JSON.parse(contenidoJson);
@@ -21,6 +22,8 @@ export const resolverRenderizadoSeccion = (tipoSeccion, contenidoJson, logoConte
             return { Componente: Acerca_nosotros, props: { contenido } };
         case 'SERVICIOS':
             return { Componente: Servicios, props: { contenido } };
+        case 'PRODUCTOS':
+            return { Componente: Productos, props: { contenido } };
         case 'REDES_SOCIALES':
             return { Componente: Redes_sociales, props: { contenido } };
         case 'CONTACTO':

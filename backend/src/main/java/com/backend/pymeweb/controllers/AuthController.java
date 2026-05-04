@@ -58,29 +58,28 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Error el email ya esta registrado.");
         }
 
-        // 1. Guardar Usuario
+
         Usuario nuevoUsuario = new Usuario();
         nuevoUsuario.setEmail(request.getEmail());
         nuevoUsuario.setPassword(passwordEncoder.encode(request.getPassword()));
         nuevoUsuario.setRol("ROL_USER");
         usuarioRepository.save(nuevoUsuario);
 
-        // 2. Guardar Negocio
+
         Negocio nuevoNegocio = new Negocio();
         nuevoNegocio.setUsuario(nuevoUsuario);
         nuevoNegocio.setNombreNegocio(request.getNombreNegocio());
         nuevoNegocio.setTipoRubro(request.getTipoRubro());
         negocioRepository.save(nuevoNegocio);
 
-        // 3. Crear ConfiguracionWeb básica
+
         ConfiguracionWeb configuracionWeb = new ConfiguracionWeb();
         configuracionWeb.setNegocio(nuevoNegocio);
-        // Si ya no usas plantillaId, ponle algo por defecto o borra esta línea si no es obligatoria
+
         configuracionWeb.setTemaGlobal("default");
         configuracionWebRepository.save(configuracionWeb);
 
-        // 4. ¡LLAMAR A LA MAGIA!
-        // Le pasamos el negocio y la palabra que vino desde React (ej: "abogados")
+
         plantillaService.generarPlantillaInicial(nuevoNegocio, request.getTipoRubro());
 
         return ResponseEntity.ok("Usuario registrado exitosamente con el rubro " + request.getTipoRubro());

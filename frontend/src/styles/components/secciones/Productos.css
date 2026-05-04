@@ -1,0 +1,42 @@
+.diseno-productos{
+    padding: 2rem 1rem;
+}
+.productos-header{
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.productos-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+.producto-card{
+    background: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    overflow: hidden;
+    display:flex;
+    flex-direction:column;
+}
+.producto-media img{
+    width:100%;
+    height:150px;
+    object-fit:cover;
+}
+.producto-media-placeholder{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:150px;
+    background:#f4f4f4;
+    color:#999;
+}
+.producto-body{
+    padding:0.75rem;
+    flex:1;
+}
+.producto-precio{
+    margin-top:0.5rem;
+    font-weight:700;
+    color:#1a73e8;
+}

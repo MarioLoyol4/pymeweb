@@ -107,12 +107,71 @@ const normalizarServiciosEdicion = (datos) => {
     });
 };
 
+const normalizarEnlacesEdicion = (datos) => {
+    let enlaces = [];
+    const valorEnlaces = datos.enlaces;
+
+    if (Array.isArray(valorEnlaces)) {
+        enlaces = valorEnlaces;
+    } else if (typeof valorEnlaces === 'string') {
+        const partes = valorEnlaces.split(',').map(item => item.trim()).filter(Boolean);
+        enlaces = partes.map(item => ({ texto: item }));
+    }
+
+    if (!enlaces.length) {
+        enlaces = [{ texto: 'Inicio' }];
+    }
+
+    return enlaces.map((enlace, index) => {
+        const txt = typeof enlace === 'string' ? enlace : (enlace.texto || `Enlace ${index + 1}`);
+        return { texto: txt };
+    });
+};
+
+const normalizarProductosEdicion = (datos) => {
+    let productos = [];
+    const valorProductos = datos.productos;
+
+    if (Array.isArray(valorProductos)) {
+        productos = valorProductos;
+    } else if (typeof valorProductos === 'string') {
+        try {
+            const parsed = JSON.parse(valorProductos);
+            if (Array.isArray(parsed)) {
+                productos = parsed;
+            } else if (parsed && typeof parsed === 'object') {
+                productos = [parsed];
+            }
+        } catch {
+            const partes = valorProductos.split(',').map((item) => item.trim()).filter(Boolean);
+            productos = partes.map((item) => ({ titulo: item }));
+        }
+    }
+
+    if (!productos.length) {
+        productos = [{ titulo: 'Producto 1', descripcion: '', imagen: '', precio: '' }];
+    }
+
+    return productos.map((producto, index) => {
+        const base = typeof producto === 'string' ? { titulo: producto } : (producto || {});
+
+        return {
+            titulo: base.titulo || base.nombre || `Producto ${index + 1}`,
+            descripcion: base.descripcion || base.detalle || '',
+            imagen: base.imagen || base.urlImagen || '',
+            precio: base.precio || ''
+        };
+    });
+};
+
 export const useEditorWeb = () => {
     const [secciones, setSecciones] = useState([]);
     const [seccionSeleccionada, setSeccionSeleccionada] = useState(null);
     const [datosEdicion, setDatosEdicion] = useState({});
     const [tarjetasEdicion, setTarjetasEdicion] = useState([]);
     const [serviciosEdicion, setServiciosEdicion] = useState([]);
+    const [productosEdicion, setProductosEdicion] = useState([]);
+    const [enlacesEdicion, setEnlacesEdicion] = useState([]);
 
     const [botonesSuperiores, setBotonesSuperiores] = useState(BOTONES_BASE);
 
@@ -170,6 +229,11 @@ export const useEditorWeb = () => {
         const datos = JSON.parse(seccion.contenidoJson);
         if (seccion.tipoSeccion === 'BARRA_MENU') {
             delete datos.textoLogo;
+            delete datos.logoTipo;
+            delete datos.logotipo;
+            setEnlacesEdicion(normalizarEnlacesEdicion(datos));
+        } else {
+            setEnlacesEdicion([]);
         }
         if (seccion.tipoSeccion === 'CABECERA' && !Object.prototype.hasOwnProperty.call(datos, 'imagenFondo')) {
             datos.imagenFondo = '';
@@ -189,6 +253,14 @@ export const useEditorWeb = () => {
             setServiciosEdicion(normalizarServiciosEdicion(datos));
         } else {
             setServiciosEdicion([]);
+        }
+        if (seccion.tipoSeccion === 'PRODUCTOS' && !Object.prototype.hasOwnProperty.call(datos, 'descripcion')) {
+            datos.descripcion = '';
+        }
+        if (seccion.tipoSeccion === 'PRODUCTOS') {
+            setProductosEdicion(normalizarProductosEdicion(datos));
+        } else {
+            setProductosEdicion([]);
         }
         if (seccion.tipoSeccion === 'CONTACTO') {
             const camposContacto = {
@@ -263,11 +335,45 @@ export const useEditorWeb = () => {
         setServiciosEdicion((prev) => prev.filter((_, idx) => idx !== index));
     };
 
+    const manejarCambioProducto = (index, campo, valor) => {
+        setProductosEdicion((prev) => prev.map((producto, idx) => (
+            idx === index ? { ...producto, [campo]: valor } : producto
+        )));
+    };
+
+    const agregarProducto = () => {
+        setProductosEdicion((prev) => ([
+            ...prev,
+            { titulo: '', descripcion: '', imagen: '', precio: '' }
+        ]));
+    };
+
+    const eliminarProducto = (index) => {
+        setProductosEdicion((prev) => prev.filter((_, idx) => idx !== index));
+    };
+
+    const manejarCambioEnlace = (index, valor) => {
+        setEnlacesEdicion((prev) => prev.map((enlace, idx) => (
+            idx === index ? { texto: valor } : enlace
+        )));
+    };
+
+    const agregarEnlace = () => {
+        setEnlacesEdicion((prev) => [...prev, { texto: 'Nuevo Enlace' }]);
+    };
+
+    const eliminarEnlace = (index) => {
+        setEnlacesEdicion((prev) => prev.filter((_, idx) => idx !== index));
+    };
+
     const guardarCambios = async () => {
         if (!seccionSeleccionada) return;
         const datosLimpios = { ...datosEdicion };
         if (seccionSeleccionada.tipoSeccion === 'BARRA_MENU') {
             delete datosLimpios.textoLogo;
+            delete datosLimpios.logoTipo;
+            delete datosLimpios.logotipo;
+            datosLimpios.enlaces = enlacesEdicion.map(e => ({ texto: e.texto || '' }));
         }
         if (seccionSeleccionada.tipoSeccion === 'ACERCA_DE_NOSOTROS') {
             datosLimpios.tarjetas = tarjetasEdicion.map((tarjeta) => ({
@@ -288,6 +394,15 @@ export const useEditorWeb = () => {
             }));
             delete datosLimpios.serviciosTexto;
         }
+        if (seccionSeleccionada.tipoSeccion === 'PRODUCTOS') {
+            datosLimpios.productos = productosEdicion.map((producto) => ({
+                titulo: producto.titulo || '',
+                descripcion: producto.descripcion || '',
+                precio: producto.precio || '',
+                imagen: producto.imagen || ''
+            }));
+            delete datosLimpios.productosTexto;
+        }
         const datosParaEnviar = { ...seccionSeleccionada, contenidoJson: JSON.stringify(datosLimpios) };
         const respuesta = await apiSaaS.actualizarSeccion(seccionSeleccionada.idSeccion, datosParaEnviar);
         if (respuesta) { cargarDatos(); alert("¡Cambios guardados!"); }
@@ -305,6 +420,11 @@ export const useEditorWeb = () => {
             titulo: "Servicios",
             descripcion: "Lo que ofrecemos",
             servicios: "Servicio 1, Servicio 2, Servicio 3"
+        };
+        if (tipoFormateado === 'PRODUCTOS') contenidoBase = {
+            titulo: "Productos",
+            descripcion: "Nuestros productos destacados",
+            productos: "Producto 1, Producto 2, Producto 3"
         };
         if (tipoFormateado === 'CONTACTO') contenidoBase = {
             titulo: "Contacto",
@@ -372,6 +492,8 @@ export const useEditorWeb = () => {
         datosEdicion,
         tarjetasEdicion,
         serviciosEdicion,
+        productosEdicion,
+        enlacesEdicion,
         botonesSuperiores,
         dragItem,
         dragOverItem,
@@ -383,6 +505,12 @@ export const useEditorWeb = () => {
         manejarCambioServicio,
         agregarServicio,
         eliminarServicio,
+        manejarCambioProducto,
+        agregarProducto,
+        eliminarProducto,
+        manejarCambioEnlace,
+        agregarEnlace,
+        eliminarEnlace,
         guardarCambios,
         manejarSoltar,
         manejarClickBoton,
