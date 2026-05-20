@@ -1,4 +1,0 @@
-2026-05-03 12:56:25.989748-04:00 jdbc[13]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "Delete [*]* from plantillas_base"; se esperaba "identifier"
-Syntax error in SQL statement "Delete [*]* from plantillas_base"; expected "identifier"; SQL statement:
-Delete * from plantillas_base [42001-240]
