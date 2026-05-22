@@ -84,7 +84,7 @@ jobs:
       - name: Build y Push Frontend
         run: |
           docker build \
-            --build-arg VITE_API_URL=http://${{ secrets.EC2_MYSQL_PRIVATE_IP }}:8080/api \
+            --build-arg VITE_API_URL=/api \
             -t ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest \
             ./proyecto/frontend
           docker push ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest
