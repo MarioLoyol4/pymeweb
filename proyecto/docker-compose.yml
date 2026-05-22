@@ -2,6 +2,9 @@ services:
   mysql:
     image: mysql:8.0
     container_name: pymeweb-mysql
+    profiles: ["mysql"]
+    ports:
+      - "3306:3306" 
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB}
@@ -18,26 +21,25 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    image: ${DOCKER_USERNAME}/pymeweb-backend:latest
     container_name: pymeweb-backend
+    profiles: ["backend"]
+    ports:
+      - "8080:8080" 
     environment:
-      MYSQL_HOST: mysql
+      MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_DB: ${MYSQL_DB}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    depends_on:
-      mysql:
-        condition: service_healthy
     networks:
       - pymeweb-network
 
   frontend:
-    build: ./frontend
+    image: ${DOCKER_USERNAME}/pymeweb-frontend:latest
     container_name: pymeweb-frontend
+    profiles: ["frontend"]
     ports:
       - "80:80"
-    depends_on:
-      - backend
     networks:
       - pymeweb-network
 
