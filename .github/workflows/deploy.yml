@@ -51,21 +51,21 @@ jobs:
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_MYSQL_ID }} \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GITHUB_USERNAME }}/${{ secrets.GITHUB_REPO }}.git . 2>/dev/null || git pull"]}'
+            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GH_USERNAME }}/${{ secrets.GH_REPO }}.git . 2>/dev/null || git pull"]}'
 
       - name: Copiar repositorio a EC2 Backend
         run: |
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_BACKEND_ID }} \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GITHUB_USERNAME }}/${{ secrets.GITHUB_REPO }}.git . 2>/dev/null || git pull"]}'
+            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GH_USERNAME }}/${{ secrets.GH_REPO }}.git . 2>/dev/null || git pull"]}'
 
       - name: Copiar repositorio a EC2 Frontend
         run: |
           aws ssm send-command \
             --instance-ids ${{ secrets.EC2_FRONTEND_ID }} \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GITHUB_USERNAME }}/${{ secrets.GITHUB_REPO }}.git . 2>/dev/null || git pull"]}'
+            --parameters '{"commands":["cd /home/ec2-user/pymeweb && git clone https://github.com/${{ secrets.GH_USERNAME }}/${{ secrets.GH_REPO }}.git . 2>/dev/null || git pull"]}'
 
       - name: Esperar que git clone termine
         run: sleep 15
