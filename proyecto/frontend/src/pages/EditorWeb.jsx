@@ -14,11 +14,13 @@ const EditorWeb = () => {
         serviciosEdicion,
         productosEdicion,
         enlacesEdicion,
+        coloresEdicion,
         botonesSuperiores,
         dragItem,
         dragOverItem,
         seleccionarSeccion,
         manejarCambio,
+        manejarCambioColor,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,
@@ -154,163 +156,205 @@ const EditorWeb = () => {
                                 </p>
                             </div>
 
-                            {Object.keys(datosEdicion).filter((llave) => {
-                                if (seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && (llave === 'textoLogo' || llave === 'enlaces' || llave === 'logoTipo' || llave === 'logotipo')) {
-                                    return false;
-                                }
-                                if (seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && (
-                                    llave === 'tarjetas' || llave === 'nombre' || llave === 'descripcion' || llave === 'foto'
-                                )) {
-                                    return false;
-                                }
-                                if (seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && llave === 'servicios') {
-                                    return false;
-                                }
-                                if (seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && llave === 'productos') {
-                                    return false;
-                                }
-                                return true;
-                            }).map((llave) => (
-                                <div className="input-group" key={llave}>
-                                    <label className="tools-label">{llave}</label>
-                                    <input className="input-editor" name={llave} value={datosEdicion[llave]} onChange={manejarCambio} />
+                            <details className="tools-accordion" open>
+                                <summary>Editor de Texto & Contenido</summary>
+                                <div className="tools-accordion-content">
+                                    {Object.keys(datosEdicion).filter((llave) => {
+                                        if (llave === 'colores') return false;
+                                        if (seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && (llave === 'textoLogo' || llave === 'enlaces' || llave === 'logoTipo' || llave === 'logotipo')) {
+                                            return false;
+                                        }
+                                        if (seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && (
+                                            llave === 'tarjetas' || llave === 'nombre' || llave === 'descripcion' || llave === 'foto'
+                                        )) {
+                                            return false;
+                                        }
+                                        if (seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && llave === 'servicios') {
+                                            return false;
+                                        }
+                                        if (seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && llave === 'productos') {
+                                            return false;
+                                        }
+                                        return true;
+                                    }).map((llave) => (
+                                        <div className="input-group" key={llave}>
+                                            <label className="tools-label">{llave}</label>
+                                            <input className="input-editor" name={llave} value={datosEdicion[llave]} onChange={manejarCambio} />
+                                        </div>
+                                    ))}
+                                    {seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && enlacesEdicion.map((enlace, index) => (
+                                        <div className="input-group" key={`enlace-${index}`}>
+                                            <label className="tools-label">Enlace #{index + 1}</label>
+                                            <input
+                                                className="input-editor"
+                                                value={enlace.texto}
+                                                onChange={(e) => manejarCambioEnlace(index, e.target.value)}
+                                            />
+                                            <button
+                                                type="button"
+                                                className="btn-guardar"
+                                                onClick={() => eliminarEnlace(index)}
+                                            >
+                                                ELIMINAR ENLACE
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && (
+                                        <button type="button" className="btn-guardar" onClick={agregarEnlace}>
+                                            AGREGAR ENLACE
+                                        </button>
+                                    )}
+                                    {seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && tarjetasEdicion.map((tarjeta, index) => (
+                                        <div className="input-group" key={`tarjeta-${index}`}>
+                                            <label className="tools-label">Tarjeta #{index + 1} - nombre</label>
+                                            <input
+                                                className="input-editor"
+                                                value={tarjeta.nombre}
+                                                onChange={(e) => manejarCambioTarjeta(index, 'nombre', e.target.value)}
+                                            />
+                                            <label className="tools-label">Tarjeta #{index + 1} - descripcion</label>
+                                            <input
+                                                className="input-editor"
+                                                value={tarjeta.descripcion}
+                                                onChange={(e) => manejarCambioTarjeta(index, 'descripcion', e.target.value)}
+                                            />
+                                            <label className="tools-label">Tarjeta #{index + 1} - foto (URL)</label>
+                                            <input
+                                                className="input-editor"
+                                                value={tarjeta.foto}
+                                                onChange={(e) => manejarCambioTarjeta(index, 'foto', e.target.value)}
+                                                placeholder="https://..."
+                                            />
+                                            <button
+                                                type="button"
+                                                className="btn-guardar"
+                                                onClick={() => eliminarTarjeta(index)}
+                                            >
+                                                ELIMINAR TARJETA
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && (
+                                        <button type="button" className="btn-guardar" onClick={agregarTarjeta}>
+                                            AGREGAR TARJETA
+                                        </button>
+                                    )}
+                                    {seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && serviciosEdicion.map((servicio, index) => (
+                                        <div className="input-group" key={`servicio-${index}`}>
+                                            <label className="tools-label">Servicio #{index + 1} - titulo</label>
+                                            <input
+                                                className="input-editor"
+                                                value={servicio.titulo}
+                                                onChange={(e) => manejarCambioServicio(index, 'titulo', e.target.value)}
+                                            />
+                                            <label className="tools-label">Servicio #{index + 1} - descripcion</label>
+                                            <input
+                                                className="input-editor"
+                                                value={servicio.descripcion}
+                                                onChange={(e) => manejarCambioServicio(index, 'descripcion', e.target.value)}
+                                            />
+                                            <label className="tools-label">Servicio #{index + 1} - icono (URL)</label>
+                                            <input
+                                                className="input-editor"
+                                                value={servicio.icono}
+                                                onChange={(e) => manejarCambioServicio(index, 'icono', e.target.value)}
+                                                placeholder="https://..."
+                                            />
+                                            <button
+                                                type="button"
+                                                className="btn-guardar"
+                                                onClick={() => eliminarServicio(index)}
+                                            >
+                                                ELIMINAR SERVICIO
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && (
+                                        <button type="button" className="btn-guardar" onClick={agregarServicio}>
+                                            AGREGAR SERVICIO
+                                        </button>
+                                    )}
+                                    {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && productosEdicion.map((producto, index) => (
+                                        <div className="input-group" key={`producto-${index}`}>
+                                            <label className="tools-label">Producto #{index + 1} - titulo</label>
+                                            <input
+                                                className="input-editor"
+                                                value={producto.titulo}
+                                                onChange={(e) => manejarCambioProducto(index, 'titulo', e.target.value)}
+                                            />
+                                            <label className="tools-label">Producto #{index + 1} - descripcion</label>
+                                            <input
+                                                className="input-editor"
+                                                value={producto.descripcion}
+                                                onChange={(e) => manejarCambioProducto(index, 'descripcion', e.target.value)}
+                                            />
+                                            <label className="tools-label">Producto #{index + 1} - precio</label>
+                                            <input
+                                                className="input-editor"
+                                                value={producto.precio}
+                                                onChange={(e) => manejarCambioProducto(index, 'precio', e.target.value)}
+                                                placeholder="$10.000"
+                                            />
+                                            <label className="tools-label">Producto #{index + 1} - imagen (URL)</label>
+                                            <input
+                                                className="input-editor"
+                                                value={producto.imagen}
+                                                onChange={(e) => manejarCambioProducto(index, 'imagen', e.target.value)}
+                                                placeholder="https://..."
+                                            />
+                                            <button
+                                                type="button"
+                                                className="btn-guardar"
+                                                onClick={() => eliminarProducto(index)}
+                                            >
+                                                ELIMINAR PRODUCTO
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && (
+                                        <button type="button" className="btn-guardar" onClick={agregarProducto}>
+                                            AGREGAR PRODUCTO
+                                        </button>
+                                    )}
                                 </div>
-                            ))}
-                            {seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && enlacesEdicion.map((enlace, index) => (
-                                <div className="input-group" key={`enlace-${index}`}>
-                                    <label className="tools-label">Enlace #{index + 1}</label>
-                                    <input
-                                        className="input-editor"
-                                        value={enlace.texto}
-                                        onChange={(e) => manejarCambioEnlace(index, e.target.value)}
-                                    />
-                                    <button
-                                        type="button"
-                                        className="btn-guardar"
-                                        onClick={() => eliminarEnlace(index)}
-                                    >
-                                        ELIMINAR ENLACE
-                                    </button>
+                            </details>
+
+                            {seccionSeleccionada && (
+                                <details className="tools-accordion">
+                                    <summary>Editor Color</summary>
+                                    <div className="tools-accordion-content">
+                                        <div className="input-group" style={{ marginBottom: 0 }}>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <input
+                                                    type="color"
+                                                    value={coloresEdicion.fondo}
+                                                    onChange={(e) => manejarCambioColor('fondo', e.target.value)}
+                                                />
+                                                <span className="tools-label" style={{ margin: 0 }}>Color de fondo</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <input
+                                                    type="color"
+                                                    value={coloresEdicion.textoTitulo}
+                                                    onChange={(e) => manejarCambioColor('textoTitulo', e.target.value)}
+                                                />
+                                                <span className="tools-label" style={{ margin: 0 }}>Color título</span>
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <input
+                                                    type="color"
+                                                    value={coloresEdicion.textoSecundario}
+                                                    onChange={(e) => manejarCambioColor('textoSecundario', e.target.value)}
+                                                />
+                                                <span className="tools-label" style={{ margin: 0 }}>Color subtítulo</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            ))}
-                            {seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && (
-                                <button type="button" className="btn-guardar" onClick={agregarEnlace}>
-                                    AGREGAR ENLACE
-                                </button>
-                            )}
-                            {seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && tarjetasEdicion.map((tarjeta, index) => (
-                                <div className="input-group" key={`tarjeta-${index}`}>
-                                    <label className="tools-label">Tarjeta #{index + 1} - nombre</label>
-                                    <input
-                                        className="input-editor"
-                                        value={tarjeta.nombre}
-                                        onChange={(e) => manejarCambioTarjeta(index, 'nombre', e.target.value)}
-                                    />
-                                    <label className="tools-label">Tarjeta #{index + 1} - descripcion</label>
-                                    <input
-                                        className="input-editor"
-                                        value={tarjeta.descripcion}
-                                        onChange={(e) => manejarCambioTarjeta(index, 'descripcion', e.target.value)}
-                                    />
-                                    <label className="tools-label">Tarjeta #{index + 1} - foto (URL)</label>
-                                    <input
-                                        className="input-editor"
-                                        value={tarjeta.foto}
-                                        onChange={(e) => manejarCambioTarjeta(index, 'foto', e.target.value)}
-                                        placeholder="https://..."
-                                    />
-                                    <button
-                                        type="button"
-                                        className="btn-guardar"
-                                        onClick={() => eliminarTarjeta(index)}
-                                    >
-                                        ELIMINAR TARJETA
-                                    </button>
-                                </div>
-                            ))}
-                            {seccionSeleccionada?.tipoSeccion === 'ACERCA_DE_NOSOTROS' && (
-                                <button type="button" className="btn-guardar" onClick={agregarTarjeta}>
-                                    AGREGAR TARJETA
-                                </button>
-                            )}
-                            {seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && serviciosEdicion.map((servicio, index) => (
-                                <div className="input-group" key={`servicio-${index}`}>
-                                    <label className="tools-label">Servicio #{index + 1} - titulo</label>
-                                    <input
-                                        className="input-editor"
-                                        value={servicio.titulo}
-                                        onChange={(e) => manejarCambioServicio(index, 'titulo', e.target.value)}
-                                    />
-                                    <label className="tools-label">Servicio #{index + 1} - descripcion</label>
-                                    <input
-                                        className="input-editor"
-                                        value={servicio.descripcion}
-                                        onChange={(e) => manejarCambioServicio(index, 'descripcion', e.target.value)}
-                                    />
-                                    <label className="tools-label">Servicio #{index + 1} - icono (URL)</label>
-                                    <input
-                                        className="input-editor"
-                                        value={servicio.icono}
-                                        onChange={(e) => manejarCambioServicio(index, 'icono', e.target.value)}
-                                        placeholder="https://..."
-                                    />
-                                    <button
-                                        type="button"
-                                        className="btn-guardar"
-                                        onClick={() => eliminarServicio(index)}
-                                    >
-                                        ELIMINAR SERVICIO
-                                    </button>
-                                </div>
-                            ))}
-                            {seccionSeleccionada?.tipoSeccion === 'SERVICIOS' && (
-                                <button type="button" className="btn-guardar" onClick={agregarServicio}>
-                                    AGREGAR SERVICIO
-                                </button>
-                            )}
-                            {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && productosEdicion.map((producto, index) => (
-                                <div className="input-group" key={`producto-${index}`}>
-                                    <label className="tools-label">Producto #{index + 1} - titulo</label>
-                                    <input
-                                        className="input-editor"
-                                        value={producto.titulo}
-                                        onChange={(e) => manejarCambioProducto(index, 'titulo', e.target.value)}
-                                    />
-                                    <label className="tools-label">Producto #{index + 1} - descripcion</label>
-                                    <input
-                                        className="input-editor"
-                                        value={producto.descripcion}
-                                        onChange={(e) => manejarCambioProducto(index, 'descripcion', e.target.value)}
-                                    />
-                                    <label className="tools-label">Producto #{index + 1} - precio</label>
-                                    <input
-                                        className="input-editor"
-                                        value={producto.precio}
-                                        onChange={(e) => manejarCambioProducto(index, 'precio', e.target.value)}
-                                        placeholder="$10.000"
-                                    />
-                                    <label className="tools-label">Producto #{index + 1} - imagen (URL)</label>
-                                    <input
-                                        className="input-editor"
-                                        value={producto.imagen}
-                                        onChange={(e) => manejarCambioProducto(index, 'imagen', e.target.value)}
-                                        placeholder="https://..."
-                                    />
-                                    <button
-                                        type="button"
-                                        className="btn-guardar"
-                                        onClick={() => eliminarProducto(index)}
-                                    >
-                                        ELIMINAR PRODUCTO
-                                    </button>
-                                </div>
-                            ))}
-                            {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && (
-                                <button type="button" className="btn-guardar" onClick={agregarProducto}>
-                                    AGREGAR PRODUCTO
-                                </button>
-                            )}
-                            <button className="btn-guardar" onClick={guardarCambios}>GUARDAR CAMBIOS</button>
+                            </details>
+                        )}
+                        <button className="btn-guardar" onClick={guardarCambios}>GUARDAR CAMBIOS</button>
                         </div>
                     ) : <p className="empty-selection-text">Selecciona una sección para editar.</p>}
                 </div>

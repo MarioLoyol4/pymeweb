@@ -1,12 +1,12 @@
 /* TITULO SECCION ACERCA DE NOSOTROS */
 .diseno-conocenos {
-    background-color: #ffffff;
+    background-color: var(--color-fondo, #ffffff);
     padding: 40px 30px;
 }
 
 /* TITULO HEADER SECCION */
 .conocenos-header h2 {
-    color: #3A666B;
+    color: var(--color-titulo, #3A666B);
     margin: 0 0 15px 0;
     font-size: 1.8rem;
     font-weight: 800;

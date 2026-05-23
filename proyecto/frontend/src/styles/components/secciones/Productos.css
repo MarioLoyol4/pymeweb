@@ -1,5 +1,12 @@
 .diseno-productos{
     padding: 2rem 1rem;
+    background-color: var(--color-fondo, transparent);
+}
+.productos-header h2 {
+    color: var(--color-titulo, inherit);
+}
+.productos-header p {
+    color: var(--color-texto, inherit);
 }
 .productos-header{
     text-align: center;

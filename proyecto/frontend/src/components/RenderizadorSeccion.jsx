@@ -10,5 +10,18 @@ export const RenderizadorSeccion = ({ tipoSeccion, contenidoJson, logoContenidoJ
 
     if (!Componente) return null;
 
-    return <Componente {...props} />;
+    const colores = props.contenido?.colores || {};
+    
+    // Configurar variables CSS dinámicamente, y asegurar que los estilos caen en el contenedor
+    const styleVariables = {
+        '--color-fondo': colores.fondo || undefined,
+        '--color-titulo': colores.textoTitulo || undefined,
+        '--color-texto': colores.textoSecundario || undefined
+    };
+
+    return (
+        <div style={styleVariables} className="seccion-wrapper-personalizada">
+            <Componente {...props} />
+        </div>
+    );
 };

@@ -5,8 +5,8 @@
     align-items: center;
     gap: 24px;
     padding: 20px 40px;
-    background-color: #3A666B; 
-    color: white;
+    background-color: var(--color-fondo, #3A666B); 
+    color: var(--color-titulo, white);
 }
 
 .barramenu-brand {

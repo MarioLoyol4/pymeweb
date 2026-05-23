@@ -172,6 +172,7 @@ export const useEditorWeb = () => {
     const [serviciosEdicion, setServiciosEdicion] = useState([]);
     const [productosEdicion, setProductosEdicion] = useState([]);
     const [enlacesEdicion, setEnlacesEdicion] = useState([]);
+    const [coloresEdicion, setColoresEdicion] = useState({ fondo: '', textoTitulo: '', textoSecundario: '' });
 
     const [botonesSuperiores, setBotonesSuperiores] = useState(BOTONES_BASE);
 
@@ -294,11 +295,25 @@ export const useEditorWeb = () => {
             });
         }
         setDatosEdicion(datos);
+
+        if (datos.colores) {
+            setColoresEdicion({
+                fondo: datos.colores.fondo || '',
+                textoTitulo: datos.colores.textoTitulo || '',
+                textoSecundario: datos.colores.textoSecundario || ''
+            });
+        } else {
+            setColoresEdicion({ fondo: '', textoTitulo: '', textoSecundario: '' });
+        }
     };
 
     const manejarCambio = (e) => {
         const { name, value } = e.target;
         setDatosEdicion((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const manejarCambioColores = (campo, valor) => {
+        setColoresEdicion((prev) => ({ ...prev, [campo]: valor }));
     };
 
     const manejarCambioTarjeta = (index, campo, valor) => {
@@ -403,6 +418,9 @@ export const useEditorWeb = () => {
             }));
             delete datosLimpios.productosTexto;
         }
+
+        datosLimpios.colores = {...coloresEdicion};
+        
         const datosParaEnviar = { ...seccionSeleccionada, contenidoJson: JSON.stringify(datosLimpios) };
         const respuesta = await apiSaaS.actualizarSeccion(seccionSeleccionada.idSeccion, datosParaEnviar);
         if (respuesta) { cargarDatos(); alert("¡Cambios guardados!"); }
@@ -437,8 +455,8 @@ export const useEditorWeb = () => {
             mapaUrl: ""
         };
         if (tipoFormateado === 'REDES_SOCIALES') contenidoBase = {
-            facebook: "https://facebook.com/miempresa",
-            instagram: "https://instagram.com/miempresa",
+            facebook: "https://facebook.com/",
+            instagram: "https://instagram.com/",
             whatsapp: "+56 9 1111 1111"
         };
 
@@ -499,6 +517,8 @@ export const useEditorWeb = () => {
         dragOverItem,
         seleccionarSeccion,
         manejarCambio,
+        manejarCambioColor: manejarCambioColores,
+        coloresEdicion,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,

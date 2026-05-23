@@ -1,6 +1,6 @@
 /* TITULO SECCION CONTACTO */
 .diseno-contacto {
-    background: #f7fbfc;
+    background: var(--color-fondo, #f7fbfc);
     padding: 56px 36px;
     border-top: 1px solid #dce8ec;
 }
@@ -11,7 +11,7 @@
 }
 
 .contacto-header h2 {
-    color: #3A666B;
+    color: var(--color-titulo, #3A666B);
     margin: 0 0 10px 0;
     font-size: 1.9rem;
     font-weight: 800;
@@ -19,7 +19,7 @@
 
 .contacto-header p {
     margin: 0 auto;
-    color: #5b6b6e;
+    color: var(--color-texto, #5b6b6e);
     max-width: 700px;
     line-height: 1.6;
 }
