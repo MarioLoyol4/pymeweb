@@ -13,8 +13,8 @@ public class ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
-    public List<Producto> findByIdProducto(Long id) {
-        return productoRepository.findByIdProducto(id);
+    public List<Producto> ListaProductos() {
+        return productoRepository.findAll();
     }
     public Producto findById(Long id) {
         return productoRepository.findById(id).orElse(null);
