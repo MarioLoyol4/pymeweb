@@ -15,12 +15,14 @@ const EditorWeb = () => {
         productosEdicion,
         enlacesEdicion,
         coloresEdicion,
+        estilosTextoEdicion,
         botonesSuperiores,
         dragItem,
         dragOverItem,
         seleccionarSeccion,
         manejarCambio,
         manejarCambioColor,
+        manejarCambioEstilosTexto,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,
@@ -335,6 +337,79 @@ const EditorWeb = () => {
                                     )}
                                 </div>
                             </details>
+
+                            {seccionSeleccionada && (
+                                <details className="tools-accordion">
+                                    <summary>Posición y Estilo de Texto</summary>
+                                    <div className="tools-accordion-content">
+                                        <div className="input-group" style={{ marginBottom: '15px' }}>
+                                            <strong style={{ display: 'block', marginBottom: '10px', color: '#3A666B' }}>Títulos</strong>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Alineación Títulos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.alineacionTitulo || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('alineacionTitulo', e.target.value)}
+                                                    >
+                                                        <option value="">Por defecto</option>
+                                                        <option value="left">Izquierda</option>
+                                                        <option value="center">Centro</option>
+                                                        <option value="right">Derecha</option>
+                                                        <option value="justify">Justificado</option>
+                                                    </select>
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Transformación Títulos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.transformacionTitulo || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('transformacionTitulo', e.target.value)}
+                                                    >
+                                                        <option value="">Ninguna</option>
+                                                        <option value="uppercase">MAYÚSCULAS</option>
+                                                        <option value="lowercase">minúsculas</option>
+                                                        <option value="capitalize">Capitalizar Palabras</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr className="tools-divider" style={{ margin: '15px 0' }}/>
+                                        <div className="input-group" style={{ marginBottom: 0 }}>
+                                            <strong style={{ display: 'block', marginBottom: '10px', color: '#3A666B' }}>Contenidos y Textos</strong>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Alineación Textos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.alineacionTexto || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('alineacionTexto', e.target.value)}
+                                                    >
+                                                        <option value="">Por defecto</option>
+                                                        <option value="left">Izquierda</option>
+                                                        <option value="center">Centro</option>
+                                                        <option value="right">Derecha</option>
+                                                        <option value="justify">Justificado</option>
+                                                    </select>
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Transformación Textos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.transformacionTexto || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('transformacionTexto', e.target.value)}
+                                                    >
+                                                        <option value="">Ninguna</option>
+                                                        <option value="uppercase">MAYÚSCULAS</option>
+                                                        <option value="lowercase">minúsculas</option>
+                                                        <option value="capitalize">Capitalizar Palabras</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </details>
+                            )}
 
                             {seccionSeleccionada && (
                                 <details className="tools-accordion">
