@@ -173,6 +173,7 @@ export const useEditorWeb = () => {
     const [productosEdicion, setProductosEdicion] = useState([]);
     const [enlacesEdicion, setEnlacesEdicion] = useState([]);
     const [coloresEdicion, setColoresEdicion] = useState({ fondo: '', textoTitulo: '', textoSecundario: '' });
+    const [estilosTextoEdicion, setEstilosTextoEdicion] = useState({ alineacionTitulo: '', transformacionTitulo: '', alineacionTexto: '', transformacionTexto: '' });
 
     const [botonesSuperiores, setBotonesSuperiores] = useState(BOTONES_BASE);
 
@@ -305,6 +306,17 @@ export const useEditorWeb = () => {
         } else {
             setColoresEdicion({ fondo: '', textoTitulo: '', textoSecundario: '' });
         }
+
+        if (datos.estilosTexto) {
+            setEstilosTextoEdicion({
+                alineacionTitulo: datos.estilosTexto.alineacionTitulo || '',
+                transformacionTitulo: datos.estilosTexto.transformacionTitulo || '',
+                alineacionTexto: datos.estilosTexto.alineacionTexto || '',
+                transformacionTexto: datos.estilosTexto.transformacionTexto || ''
+            });
+        } else {
+            setEstilosTextoEdicion({ alineacionTitulo: '', transformacionTitulo: '', alineacionTexto: '', transformacionTexto: '' });
+        }
     };
 
     const manejarCambio = (e) => {
@@ -314,6 +326,10 @@ export const useEditorWeb = () => {
 
     const manejarCambioColores = (campo, valor) => {
         setColoresEdicion((prev) => ({ ...prev, [campo]: valor }));
+    };
+
+    const manejarCambioEstilosTexto = (campo, valor) => {
+        setEstilosTextoEdicion((prev) => ({ ...prev, [campo]: valor }));
     };
 
     const manejarCambioTarjeta = (index, campo, valor) => {
@@ -420,6 +436,7 @@ export const useEditorWeb = () => {
         }
 
         datosLimpios.colores = {...coloresEdicion};
+        datosLimpios.estilosTexto = {...estilosTextoEdicion};
         
         const datosParaEnviar = { ...seccionSeleccionada, contenidoJson: JSON.stringify(datosLimpios) };
         const respuesta = await apiSaaS.actualizarSeccion(seccionSeleccionada.idSeccion, datosParaEnviar);
@@ -519,6 +536,8 @@ export const useEditorWeb = () => {
         manejarCambio,
         manejarCambioColor: manejarCambioColores,
         coloresEdicion,
+        estilosTextoEdicion,
+        manejarCambioEstilosTexto,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,
