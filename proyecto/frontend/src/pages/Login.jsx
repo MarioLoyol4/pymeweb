@@ -19,7 +19,7 @@ const Login = () => {
       <div className="auth-orb orb-two" />
       <div className="auth-shell">
         <section className="auth-hero">
-          <span className="auth-kicker">SimpliPyme</span>
+          <span className="auth-kicker">PymeWeb</span>
           <h1>Tu panel listo para vender en minutos.</h1>
           <p>
             Ingresa para editar tu sitio, cambiar secciones y mantener tu pyme
