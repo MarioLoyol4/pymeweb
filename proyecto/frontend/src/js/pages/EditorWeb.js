@@ -420,7 +420,21 @@ export const useEditorWeb = () => {
         }
 
         datosLimpios.colores = {...coloresEdicion};
-        
+        // Intentar parsear campos que el usuario haya editado como JSON (textarea), por ejemplo estilosTextos
+        Object.keys(datosLimpios).forEach((k) => {
+            const v = datosLimpios[k];
+            if (typeof v === 'string') {
+                const trimmed = v.trim();
+                if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+                    try {
+                        datosLimpios[k] = JSON.parse(trimmed);
+                    } catch {
+                        // si no es JSON válido lo dejamos como string
+                    }
+                }
+            }
+        });
+
         const datosParaEnviar = { ...seccionSeleccionada, contenidoJson: JSON.stringify(datosLimpios) };
         const respuesta = await apiSaaS.actualizarSeccion(seccionSeleccionada.idSeccion, datosParaEnviar);
         if (respuesta) { cargarDatos(); alert("¡Cambios guardados!"); }
