@@ -69,18 +69,14 @@ export const RenderizadorSeccion = ({ tipoSeccion, contenidoJson, logoContenidoJ
     // Añadir clase por tipo de sección para permitir reglas CSS específicas por sección
     const tipoClass = `tipo-${String(tipoSeccion || '').replace(/\s+/g, '_')}`;
 
+    // Mapear estilosTexto a variables CSS en el wrapper (evita inyectar <style> dinámico)
+    if (estilosTexto.alineacionTitulo) styleVariables['--seccion-titulo-align'] = estilosTexto.alineacionTitulo;
+    if (estilosTexto.transformacionTitulo) styleVariables['--seccion-titulo-transform'] = estilosTexto.transformacionTitulo;
+    if (estilosTexto.alineacionTexto) styleVariables['--seccion-texto-align'] = estilosTexto.alineacionTexto;
+    if (estilosTexto.transformacionTexto) styleVariables['--seccion-texto-transform'] = estilosTexto.transformacionTexto;
+
     return (
-        <div id={idSeccion} style={styleVariables} className="seccion-wrapper-personalizada">
-            {(estilosTexto.alineacionTitulo || estilosTexto.transformacionTitulo || estilosTexto.alineacionTexto || estilosTexto.transformacionTexto) && (
-                <style>
-                    {`
-                        ${estilosTexto.alineacionTitulo ? `#${idSeccion} h1, #${idSeccion} h2, #${idSeccion} h3, #${idSeccion} h4, #${idSeccion} h5, #${idSeccion} h6 { text-align: ${estilosTexto.alineacionTitulo} !important; }` : ''}
-                        ${estilosTexto.transformacionTitulo ? `#${idSeccion} h1, #${idSeccion} h2, #${idSeccion} h3, #${idSeccion} h4, #${idSeccion} h5, #${idSeccion} h6 { text-transform: ${estilosTexto.transformacionTitulo} !important; }` : ''}
-                        ${estilosTexto.alineacionTexto ? `#${idSeccion} p, #${idSeccion} span, #${idSeccion} a:not(.btn-guardar):not(.redes-btn), #${idSeccion} li { text-align: ${estilosTexto.alineacionTexto} !important; }` : ''}
-                        ${estilosTexto.transformacionTexto ? `#${idSeccion} p, #${idSeccion} span, #${idSeccion} a:not(.btn-guardar):not(.redes-btn), #${idSeccion} li { text-transform: ${estilosTexto.transformacionTexto} !important; }` : ''}
-                    `}
-                </style>
-            )}
+        <div id={idSeccion} style={styleVariables} className={`seccion-wrapper-personalizada ${tipoClass}`}>
             <Componente {...props} />
         </div>
     );
