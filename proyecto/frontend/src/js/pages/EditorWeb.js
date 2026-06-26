@@ -297,14 +297,32 @@ export const useEditorWeb = () => {
         }
         setDatosEdicion(datos);
 
+        const computeDefaultColors = (tipo, datosSeccion) => {
+            const t = String(tipo || '').toUpperCase();
+            
+            if (t === 'CABECERA') {
+                
+                if (datosSeccion.imagenFondo) {
+                    return { fondo: '', textoTitulo: '#ffffff', textoSecundario: '#ffffff' };
+                }
+                return { fondo: '#f2f7f8', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            }
+            if (t === 'BARRA_MENU') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'ACERCA_DE_NOSOTROS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'SERVICIOS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'PRODUCTOS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            
+            return { fondo: '', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+        };
+
         if (datos.colores) {
             setColoresEdicion({
-                fondo: datos.colores.fondo || '',
-                textoTitulo: datos.colores.textoTitulo || '',
-                textoSecundario: datos.colores.textoSecundario || ''
+                fondo: datos.colores.fondo || computeDefaultColors(seccion.tipoSeccion, datos).fondo || '',
+                textoTitulo: datos.colores.textoTitulo || computeDefaultColors(seccion.tipoSeccion, datos).textoTitulo || '',
+                textoSecundario: datos.colores.textoSecundario || computeDefaultColors(seccion.tipoSeccion, datos).textoSecundario || ''
             });
         } else {
-            setColoresEdicion({ fondo: '', textoTitulo: '', textoSecundario: '' });
+            setColoresEdicion(computeDefaultColors(seccion.tipoSeccion, datos));
         }
 
         if (datos.estilosTexto) {

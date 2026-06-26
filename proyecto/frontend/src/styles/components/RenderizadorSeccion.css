@@ -1,1 +1,31 @@
-/* SIN ESTILOS */
+/* Estilos base para el contenedor personalizado de cada sección */
+/* Aplicar comportamiento flex solo a secciones que no sean la barra de menú
+   para no romper su diseño original */
+.seccion-wrapper-personalizada:not(.tipo-BARRA_MENU) {
+	box-sizing: border-box;
+	background-color: var(--color-fondo, transparent);
+	color: var(--color-texto, inherit);
+	height: var(--seccion-altura, auto);
+	min-height: var(--seccion-min-height, 200px);
+	width: 100%;
+	min-width: 320px;
+	/* asegurar que el contenido ocupe todo el espacio disponible */
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+}
+
+/* Hacer que el primer nivel de contenido interno se estire para llenar la sección */
+.seccion-wrapper-personalizada:not(.tipo-BARRA_MENU) > * {
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	min-height: 0; /* permitir que los hijos se contraigan dentro del flex container */
+	height: 100%;
+}
+
+.seccion-wrapper-personalizada h1,
+.seccion-wrapper-personalizada h2,
+.seccion-wrapper-personalizada h3 {
+	color: var(--color-titulo, inherit);
+}
