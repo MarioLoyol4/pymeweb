@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface NegocioRepository extends JpaRepository<Negocio, Long> {
     Optional<Negocio> findByUsuario(Usuario usuario);
+    Optional<Negocio> findBySlug(String slug);
 }

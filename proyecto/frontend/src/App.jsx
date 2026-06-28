@@ -21,7 +21,7 @@ function App() {
             </ProtectedRoute>
           )}
         />
-        <Route path="/p/:idNegocio" element={<PaginaPublica />} />
+        <Route path="/PymeWeb/:slug" element={<PaginaPublica />} />
       </Routes>
     </Router>
   );

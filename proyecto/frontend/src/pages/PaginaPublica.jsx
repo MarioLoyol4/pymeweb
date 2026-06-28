@@ -5,13 +5,13 @@ import { usePaginaPublica } from '../js/pages/PaginaPublica.js';
 import '../styles/pages/PaginaPublica.css';
 
 const PaginaPublica = () => {
-    const { idNegocio } = useParams();
+    const { slug } = useParams();
     const {
         seccionesOrdenadas,
         logoSeccion,
         barraMenuSeccion,
         combinarLogoEnMenu
-    } = usePaginaPublica(idNegocio);
+    } = usePaginaPublica(slug);
 
     return (
         // TITULO LAYOUT GENERAL DE LA PAGINA PUBLICA
