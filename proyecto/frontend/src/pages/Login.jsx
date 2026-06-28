@@ -17,76 +17,182 @@ const Login = () => {
     <div className="auth-page">
       <div className="auth-orb orb-one" />
       <div className="auth-orb orb-two" />
-      <div className="auth-shell">
+
+      {/* Contenedor principal */}
+      <div className="auth-container">
+
+        {/* ================= HERO IZQUIERDO ================= */}
         <section className="auth-hero">
-          <span className="auth-kicker">SimpliPyme</span>
-          <h1>Tu panel listo para vender en minutos.</h1>
-          <p>
-            Ingresa para editar tu sitio, cambiar secciones y mantener tu pyme
-            siempre actualizada.
-          </p>
+
+          <div className="brand-logo">
+            <span className="logo-icon">📦</span>
+            <strong>SimpliPyme</strong>
+          </div>
+
+          <h1 className="hero-title">
+            Tu panel listo para vender en minutos.
+          </h1>
+          <div className="hero-content-layout">
+            <div className="hero-illustration-container">
+              <img
+                src="/imagen1jpg.jpg"
+                alt="Registro SimpliPyme"
+                className="hero-image"
+              />
+            </div>
+
+            <p className="hero-subtitle">
+              Digitaliza tu negocio, administra tu página web y mantén toda la
+              información de tu negocio actualizada desde un solo lugar.
+            </p>
+         </div>
+
+          {/* Información adicional */}
           <div className="auth-hero-card">
-            <div>
+
+            <div className="hero-feature">
               <strong>Editor visual</strong>
-              <span>Arrastra secciones y guarda al instante.</span>
+              <span>
+                Modifica el contenido de tu sitio de manera sencilla sin
+                conocimientos técnicos.
+              </span>
             </div>
-            <div>
+
+            <div className="hero-feature">
               <strong>Plantillas listas</strong>
-              <span>Elige el estilo que mejor represente tu rubro.</span>
+              <span>
+                Elige el estilo que mejor represente tu rubro.
+              </span>
             </div>
+
+            <div className="hero-feature">
+              <strong>Actualización instantánea</strong>
+              <span>
+                Los cambios se reflejan inmediatamente en tu página web.
+              </span>
+            </div>
+
           </div>
+
         </section>
+
+        {/* ================= FORMULARIO ================= */}
         <section className="auth-card">
-          <div className="auth-card-header">
-            <h2>Iniciar sesion</h2>
-            <p>Accede con el email de tu cuenta.</p>
+
+          {/* Tabs */}
+          <div className="auth-tabs">
+            <button className="tab-button active">
+              Iniciar sesión
+            </button>
+
+            <Link
+              to="/registro"
+              className="tab-button text-muted-tab"
+            >
+              Registrarse
+            </Link>
           </div>
+
+          <div className="auth-card-header">
+            <h2>Bienvenido nuevamente</h2>
+            <p>
+              Ingresa con el correo electrónico asociado a tu cuenta para
+              acceder al panel de administración.
+            </p>
+          </div>
+
           {registroOK && (
             <div className="auth-alert success">
-              Cuenta creada. Ahora puedes iniciar sesion.
+              Cuenta creada correctamente. Ahora puedes iniciar sesión.
             </div>
           )}
-          {error && <div className="auth-alert error">{error}</div>}
-          <form className="auth-form" onSubmit={manejarSubmit}>
-            <label className="auth-label" htmlFor="email">
-              Email
-            </label>
-            <input
-              className="auth-input"
-              id="email"
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={manejarCambio}
-              placeholder="usuario@ejemplo.com"
-              autoComplete="email"
-              required
-            />
-            <label className="auth-label" htmlFor="password">
-              Contrasena
-            </label>
-            <input
-              className="auth-input"
-              id="password"
-              name="password"
-              type="password"
-              value={form.password}
-              onChange={manejarCambio}
-              placeholder="Tu clave segura"
-              autoComplete="current-password"
-              required
-            />
-            <button className="auth-button" type="submit" disabled={loading}>
+
+          {error && (
+            <div className="auth-alert error">
+              {error}
+            </div>
+          )}
+
+          <form
+            className="auth-form"
+            onSubmit={manejarSubmit}
+          >
+
+            {/* Correo */}
+            <div className="input-group">
+              <label
+                className="auth-label"
+                htmlFor="email"
+              >
+                Correo electrónico
+              </label>
+
+              <div className="input-with-icon">
+                <span className="input-icon">👤</span>
+
+                <input
+                  className="auth-input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={form.email}
+                  onChange={manejarCambio}
+                  placeholder="ejemplo@gmail.com"
+                  autoComplete="email"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Contraseña */}
+            <div className="input-group">
+              <label
+                className="auth-label"
+                htmlFor="password"
+              >
+                Contraseña
+              </label>
+
+              <div className="input-with-icon">
+                <span className="input-icon">🔒</span>
+
+                <input
+                  className="auth-input"
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={form.password}
+                  onChange={manejarCambio}
+                  placeholder="***************"
+                  autoComplete="current-password"
+                  required
+                />
+              </div>
+            </div>
+
+            <button
+              className="auth-button btn-primary-orange"
+              type="submit"
+              disabled={loading}
+            >
               {loading ? 'Ingresando...' : 'Entrar al editor'}
             </button>
+
           </form>
+
           <div className="auth-footer">
-            <span>¿Aun no tienes cuenta?</span>
-            <Link className="auth-link" to="/registro">
+            <span>¿Aún no tienes una cuenta?</span>
+
+            <Link
+              className="auth-link"
+              to="/registro"
+            >
               Crear cuenta
             </Link>
           </div>
+
         </section>
+
       </div>
     </div>
   );

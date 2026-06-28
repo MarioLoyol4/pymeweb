@@ -19,136 +19,315 @@ const Registro = () => {
     <div className="auth-page">
       <div className="auth-orb orb-one" />
       <div className="auth-orb orb-two" />
-      <div className="auth-shell">
+
+      <div className="auth-container">
+
+        {/* ================= HERO ================= */}
         <section className="auth-hero">
-          <span className="auth-kicker">PymeWeb</span>
-          <h1>Abre tu pagina en dos pasos.</h1>
-          <p>
-            Crea tu cuenta, elige el estilo y empieza a editar tu sitio sin
-            esperas.
-          </p>
-          <div className="auth-hero-card">
-            <div>
-              <strong>Template guiado</strong>
-              <span>Selecciona el rubro y la plantilla inicial.</span>
-            </div>
-            <div>
-              <strong>Datos centralizados</strong>
-              <span>Tu negocio listo para crecer desde el primer dia.</span>
-            </div>
+
+          <div className="brand-logo">
+            <span className="logo-icon">📦</span>
+            <strong>SimpliPyme</strong>
           </div>
+
+          <h1 className="hero-title">
+            Abre tu página web en solo dos pasos.
+          </h1>
+
+          <div className="hero-content-layout">
+            <div className="hero-illustration-container">
+              <img
+                src="/imagen1jpg.jpg"
+                alt="Registro SimpliPyme"
+                className="hero-image"
+              />
+            </div>
+
+            <p className="hero-subtitle">
+              Crea tu cuenta, selecciona el rubro de tu negocio y comienza a
+              administrar tu sitio web desde un editor simple, rápido y seguro.
+            </p>
+         </div>
+
+          <div className="auth-hero-card">
+
+            <div className="hero-feature">
+              <strong>Registro guiado</strong>
+              <span>
+                Completa la información paso a paso para crear tu sitio.
+              </span>
+            </div>
+
+            <div className="hero-feature">
+              <strong>Plantillas inteligentes</strong>
+              <span>
+                Escoge un rubro y comienza con una estructura prediseñada.
+              </span>
+            </div>
+
+            <div className="hero-feature">
+              <strong>Datos centralizados</strong>
+              <span>
+                Toda la información de tu negocio organizada desde el primer día.
+              </span>
+            </div>
+
+          </div>
+
         </section>
+
+        {/* ================= FORMULARIO ================= */}
+
         <section className="auth-card">
+
+          <div className="auth-tabs">
+            <Link
+              to="/login"
+              className="tab-button text-muted-tab"
+            >
+              Iniciar sesión
+            </Link>
+
+            <button className="tab-button active">
+              Registrarse
+            </button>
+          </div>
+
           <div className="auth-card-header">
             <h2>Crear cuenta</h2>
-            <p>Completa el registro para activar tu editor.</p>
+            <p>
+              Completa el registro para activar tu panel de administración y
+              comenzar a personalizar tu sitio web.
+            </p>
           </div>
-          <div className="auth-steps">
-            <span className={`auth-step ${paso === 1 ? 'active' : ''}`}>
-              Paso 1
+
+          <div className="auth-steps-container">
+
+            <span className={`step-badge ${paso === 1 ? 'step-active' : ''}`}>
+              Paso 1 · Credenciales
             </span>
-            <span className={`auth-step ${paso === 2 ? 'active' : ''}`}>
-              Paso 2
+
+            <div className="step-line"></div>
+
+            <span className={`step-badge ${paso === 2 ? 'step-active' : ''}`}>
+              Paso 2 · Negocio
             </span>
+
           </div>
-          {error && <div className="auth-alert error">{error}</div>}
-          <form className="auth-form" onSubmit={paso === 1 ? avanzar : manejarSubmit}>
+
+          {error && (
+            <div className="auth-alert error">
+              {error}
+            </div>
+          )}
+
+          <form
+            className="auth-form"
+            onSubmit={paso === 1 ? avanzar : manejarSubmit}
+          >
+
             {paso === 1 ? (
+
               <>
-                <label className="auth-label" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  className="auth-input"
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={manejarCambio}
-                  placeholder="usuario@ejemplo.com"
-                  autoComplete="email"
-                  required
-                />
-                <label className="auth-label" htmlFor="password">
-                  Contrasena
-                </label>
-                <input
-                  className="auth-input"
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={form.password}
-                  onChange={manejarCambio}
-                  placeholder="Crea una clave segura"
-                  autoComplete="new-password"
-                  required
-                />
-                <div className="auth-actions">
-                  <button className="auth-button" type="submit">
+
+                <div className="input-group">
+
+                  <label
+                    className="auth-label"
+                    htmlFor="email"
+                  >
+                    Correo electrónico
+                  </label>
+
+                  <div className="input-with-icon">
+
+                    <span className="input-icon">👤</span>
+
+                    <input
+                      className="auth-input"
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={manejarCambio}
+                      placeholder="ejemplo@gmail.com"
+                      autoComplete="email"
+                      required
+                    />
+
+                  </div>
+
+                </div>
+
+                <div className="input-group">
+
+                  <label
+                    className="auth-label"
+                    htmlFor="password"
+                  >
+                    Contraseña
+                  </label>
+
+                  <div className="input-with-icon">
+
+                    <span className="input-icon">🔒</span>
+
+                    <input
+                      className="auth-input"
+                      id="password"
+                      name="password"
+                      type="password"
+                      value={form.password}
+                      onChange={manejarCambio}
+                      placeholder="Crea una contraseña segura"
+                      autoComplete="new-password"
+                      required
+                    />
+
+                  </div>
+
+                </div>
+
+                <div className="auth-actions-row">
+
+                  <button
+                    className="auth-button btn-primary-orange"
+                    type="submit"
+                  >
                     Continuar
                   </button>
+
                 </div>
+
               </>
+
             ) : (
+
               <>
-                <label className="auth-label" htmlFor="nombreNegocio">
-                  Nombre del negocio
-                </label>
-                <input
-                  className="auth-input"
-                  id="nombreNegocio"
-                  name="nombreNegocio"
-                  type="text"
-                  value={form.nombreNegocio}
-                  onChange={manejarCambio}
-                  placeholder="Mi Pyme SpA"
-                  required
-                />
-                <label className="auth-label" htmlFor="tipoRubro">
-                  Tipo de rubro
-                </label>
 
-                <select
-                  className='auth-select'
-                  id='tipoRubro'
-                  name='tipoRubro'
-                  value={form.tipoRubro}
-                  onChange={manejarCambio}
-                >
-                  <option value="" disabled>Selecciona un rubro</option>
-                  <option value="abogados">Abogados</option>
-                  <option value="mascotas">Mascotas</option>
-                  <option value="restaurante">Restaurante</option>
-                  <option value="generico">Comenzar en blanco</option>
-                </select>
+                <div className="input-group">
 
-                <div className="auth-summary">
-                  <span>Negocio: {form.nombreNegocio || 'Por definir'}</span>
-                  <span>Rubro: {form.tipoRubro || 'Por definir'}</span>
-                  
+                  <label
+                    className="auth-label"
+                    htmlFor="nombreNegocio"
+                  >
+                    Nombre del negocio
+                  </label>
+
+                  <div className="input-with-icon">
+
+                    <span className="input-icon">🏢</span>
+
+                    <input
+                      className="auth-input"
+                      id="nombreNegocio"
+                      name="nombreNegocio"
+                      type="text"
+                      value={form.nombreNegocio}
+                      onChange={manejarCambio}
+                      placeholder="Mi Pyme SpA"
+                      required
+                    />
+
+                  </div>
+
                 </div>
-                <div className="auth-actions">
-                  <button className="auth-button secondary" type="button" onClick={retroceder}>
-                    Atras
-                  </button>
+
+                <div className="input-group">
+
+                  <label
+                    className="auth-label"
+                    htmlFor="tipoRubro"
+                  >
+                    Tipo de rubro
+                  </label>
+
+                  <div className="input-with-icon">
+
+                    <span className="input-icon">🏷️</span>
+
+                    <select
+                      className="auth-select"
+                      id="tipoRubro"
+                      name="tipoRubro"
+                      value={form.tipoRubro}
+                      onChange={manejarCambio}
+                      required
+                    >
+                      <option value="" disabled>
+                        Selecciona un rubro
+                      </option>
+                      <option value="abogados">Abogados</option>
+                      <option value="mascotas">Mascotas</option>
+                      <option value="restaurante">Restaurante</option>
+                      <option value="generico">Comenzar en blanco</option>
+                    </select>
+
+                  </div>
+
+                </div>
+
+                <div className="auth-summary-box">
+
+                  <p>
+                    <strong>Resumen de tu sitio</strong>
+                  </p>
+
+                  <ul>
+                    <li>
+                      Negocio:
+                      <span> {form.nombreNegocio || ' Por definir'}</span>
+                    </li>
+
+                    <li>
+                      Rubro:
+                      <span> {form.tipoRubro || ' Por definir'}</span>
+                    </li>
+                  </ul>
+
+                </div>
+
+                <div className="auth-actions-row split">
+
                   <button
-                    className="auth-button"
+                    className="auth-button btn-secondary-back"
+                    type="button"
+                    onClick={retroceder}
+                  >
+                    Atrás
+                  </button>
+
+                  <button
+                    className="auth-button btn-primary-orange"
                     type="submit"
                     disabled={loading}
                   >
                     {loading ? 'Creando...' : 'Crear cuenta'}
                   </button>
+
                 </div>
+
               </>
+
             )}
+
           </form>
+
           <div className="auth-footer">
+
             <span>¿Ya tienes cuenta?</span>
-            <Link className="auth-link" to="/login">
-              Inicia sesion
+
+            <Link
+              className="auth-link"
+              to="/login"
+            >
+              Inicia sesión
             </Link>
+
           </div>
+
         </section>
+
       </div>
     </div>
   );

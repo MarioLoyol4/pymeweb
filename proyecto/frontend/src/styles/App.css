@@ -1,1 +1,58 @@
-/* SIN ESTILOS */
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN GLOBAL (Design Tokens)
+   ========================================================================== */
+:root {
+  /* --- Colores de Marca Principales (Vistos en Navegación y Botones) --- */
+  --primary-color: #0F2537;       /* Azul marino profundo: Formalidad y alto contraste */
+  --primary-hover: #1A3A54;       /* Estado hover para el azul marino */
+  --secondary-color: #FFB300;     /* Ámbar puro: Color de acento llamativo para CTAs */
+  --secondary-hover: #E6A200;     /* Estado hover para el ámbar */
+
+  /* --- Colores de Fondo y Superficie --- */
+  --background-color: #e1f9ff;    /* Gris muy claro: Reduce el resplandor frente al blanco puro */
+  --surface-color: #FFFFFF;       /* Blanco puro para maximizar el contraste de los contenedores */
+  
+  /* --- Colores de Texto (Jerarquía y Legibilidad WCAG AAA) --- */
+  --text-main: #1A1E23;           /* Gris antracita casi negro para legibilidad óptima */
+  --text-muted: #4A5568;          /* Gris medio para datos secundarios, manteniendo contraste */
+  --text-light: #FFFFFF;          /* Blanco para textos sobre fondos oscuros o primarios */
+
+  /* --- Bordes y Elementos Estructurales --- */
+  --border-color: #CBD5E1;        /* Gris neutro para delimitación de áreas */
+  --border-focus: #FFB300;        /* Foco ámbar para accesibilidad en navegación por teclado */
+
+  /* --- Acentuación Específica (Tarjetas de Beneficios e Iconos) --- */
+  --badge-blue-bg: #E1EFFE;       
+  --badge-blue-num: #1E40AF;      
+  
+  --badge-orange-bg: #FEF3C7;     
+  --badge-orange-num: #D97706;    
+  
+  --badge-green-bg: #DEF7EC;      
+  --badge-green-num: #046C4E;     
+
+  /* --- Tipografía, Radios y Animaciones unificadas --- */
+  --font-main: 'Open Sans', system-ui, -apple-system, sans-serif; /* Tipografía de alta legibilidad */
+  --font-title: 'Montserrat', sans-serif; /* Tipografía geométrica para impacto visual en encabezados */
+  --radius-sm: 4px;               /* Bordes más rígidos para enfatizar formalidad */
+  --radius-md: 8px;               
+  --radius-lg: 32px;              /* Botones redondeados pero estructurados */
+  --transition-fast: 0.2s ease-in-out;
+  --box-shadow-smooth: 0 4px 6px rgba(0, 0, 0, 0.05); /* Sombra acotada, menos dispersa */
+}
+
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--background-color);
+  color: var(--text-main);
+  line-height: 1.6; /* Incrementado para facilitar la lectura en bloques de texto */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
