@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RenderizadorSeccion } from '../components/RenderizadorSeccion';
 import { useEditorWeb } from '../js/pages/EditorWeb.js';
-import { logout } from '../services/authService';
+import { logout, getSlug } from '../services/authService';
 import '../styles/pages/EditorWeb.css';
 
 const EditorWeb = () => {
@@ -15,12 +15,14 @@ const EditorWeb = () => {
         productosEdicion,
         enlacesEdicion,
         coloresEdicion,
+        estilosTextoEdicion,
         botonesSuperiores,
         dragItem,
         dragOverItem,
         seleccionarSeccion,
         manejarCambio,
         manejarCambioColor,
+        manejarCambioEstilosTexto,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,
@@ -42,11 +44,16 @@ const EditorWeb = () => {
         combinarLogoEnMenu
     } = useEditorWeb();
 
+    // estado local para edición puntual de campos JSON sin mostrarlos por defecto
+    const [editJsonField, setEditJsonField] = useState(null);
+    const [editJsonValue, setEditJsonValue] = useState('');
+
     const navigate = useNavigate();
 
     const irPaginaPublica = () => {
-        if (!negocioId) return;
-        navigate(`/p/${negocioId}`);
+        const slug = getSlug();
+        if (!slug) return;
+        navigate(`/PymeWeb/${slug}`);
     };
 
     const manejarCerrarSesion = () => {
@@ -116,13 +123,22 @@ const EditorWeb = () => {
                             const estaSeleccionada = seccionSeleccionada?.idSeccion === seccion.idSeccion
                                 || (combinarLogoEnMenu && esBarraMenu && seccionSeleccionada?.idSeccion === logoSeccion?.idSeccion);
 
-                            const contenidoJson = esBarraMenu && combinarLogoEnMenu
-                                ? barraMenuSeccion.contenidoJson
-                                : seccion.contenidoJson;
+                            // Si la sección está seleccionada, usamos `datosEdicion` para previsualizar cambios en tiempo real
+                            let contenidoJson;
+                            let logoContenidoJson = null;
 
-                            const logoContenidoJson = esBarraMenu && combinarLogoEnMenu
-                                ? logoSeccion.contenidoJson
-                                : null;
+                            if (estaSeleccionada) {
+                                if (esBarraMenu && combinarLogoEnMenu) {
+                                    contenidoJson = barraMenuSeccion ? JSON.stringify(datosEdicion) : seccion.contenidoJson;
+                                    logoContenidoJson = logoSeccion ? logoSeccion.contenidoJson : null;
+                                } else {
+                                    contenidoJson = JSON.stringify(datosEdicion);
+                                    logoContenidoJson = null;
+                                }
+                            } else {
+                                contenidoJson = esBarraMenu && combinarLogoEnMenu ? barraMenuSeccion.contenidoJson : seccion.contenidoJson;
+                                logoContenidoJson = esBarraMenu && combinarLogoEnMenu ? (logoSeccion ? logoSeccion.contenidoJson : null) : null;
+                            }
 
                             return (
                                 <div
@@ -160,7 +176,11 @@ const EditorWeb = () => {
                                 <summary>Editor de Texto & Contenido</summary>
                                 <div className="tools-accordion-content">
                                     {Object.keys(datosEdicion).filter((llave) => {
+                                        // ocultar controles de tamaño del editor de contenido; se manejan en "Tamaño de sección"
+                                        if (llave === 'altura' || llave === 'ancho') return false;
                                         if (llave === 'colores') return false;
+                                        // ocultar campos que son objetos (ej. estilosTexto)
+                                        if (typeof datosEdicion[llave] === 'object' && datosEdicion[llave] !== null) return false;
                                         if (seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && (llave === 'textoLogo' || llave === 'enlaces' || llave === 'logoTipo' || llave === 'logotipo')) {
                                             return false;
                                         }
@@ -179,7 +199,7 @@ const EditorWeb = () => {
                                     }).map((llave) => (
                                         <div className="input-group" key={llave}>
                                             <label className="tools-label">{llave}</label>
-                                            <input className="input-editor" name={llave} value={datosEdicion[llave]} onChange={manejarCambio} />
+                                            <input className="input-editor" name={llave} value={datosEdicion[llave] ?? ''} onChange={manejarCambio} />
                                         </div>
                                     ))}
                                     {seccionSeleccionada?.tipoSeccion === 'BARRA_MENU' && enlacesEdicion.map((enlace, index) => (
@@ -321,6 +341,79 @@ const EditorWeb = () => {
 
                             {seccionSeleccionada && (
                                 <details className="tools-accordion">
+                                    <summary>Posición y Estilo de Texto</summary>
+                                    <div className="tools-accordion-content">
+                                        <div className="input-group" style={{ marginBottom: '15px' }}>
+                                            <strong style={{ display: 'block', marginBottom: '10px', color: '#3A666B' }}>Títulos</strong>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Alineación Títulos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.alineacionTitulo || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('alineacionTitulo', e.target.value)}
+                                                    >
+                                                        <option value="">Por defecto</option>
+                                                        <option value="left">Izquierda</option>
+                                                        <option value="center">Centro</option>
+                                                        <option value="right">Derecha</option>
+                                                        <option value="justify">Justificado</option>
+                                                    </select>
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Transformación Títulos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.transformacionTitulo || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('transformacionTitulo', e.target.value)}
+                                                    >
+                                                        <option value="">Ninguna</option>
+                                                        <option value="uppercase">MAYÚSCULAS</option>
+                                                        <option value="lowercase">minúsculas</option>
+                                                        <option value="capitalize">Capitalizar Palabras</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr className="tools-divider" style={{ margin: '15px 0' }}/>
+                                        <div className="input-group" style={{ marginBottom: 0 }}>
+                                            <strong style={{ display: 'block', marginBottom: '10px', color: '#3A666B' }}>Contenidos y Textos</strong>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Alineación Textos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.alineacionTexto || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('alineacionTexto', e.target.value)}
+                                                    >
+                                                        <option value="">Por defecto</option>
+                                                        <option value="left">Izquierda</option>
+                                                        <option value="center">Centro</option>
+                                                        <option value="right">Derecha</option>
+                                                        <option value="justify">Justificado</option>
+                                                    </select>
+                                                </div>
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                                    <span className="tools-label" style={{ margin: 0 }}>Transformación Textos</span>
+                                                    <select
+                                                        className="input-editor"
+                                                        value={estilosTextoEdicion.transformacionTexto || ''}
+                                                        onChange={(e) => manejarCambioEstilosTexto('transformacionTexto', e.target.value)}
+                                                    >
+                                                        <option value="">Ninguna</option>
+                                                        <option value="uppercase">MAYÚSCULAS</option>
+                                                        <option value="lowercase">minúsculas</option>
+                                                        <option value="capitalize">Capitalizar Palabras</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </details>
+                            )}
+
+                            {seccionSeleccionada && (
+                                <details className="tools-accordion">
                                     <summary>Editor Color</summary>
                                     <div className="tools-accordion-content">
                                         <div className="input-group" style={{ marginBottom: 0 }}>
@@ -353,7 +446,42 @@ const EditorWeb = () => {
                                     </div>
                                 </div>
                             </details>
-                        )}
+                            )}
+
+                            {seccionSeleccionada && (
+                                <details className="tools-accordion">
+                                    <summary>Tamaño de sección</summary>
+                                    <div className="tools-accordion-content">
+                                        <div className="input-group">
+                                            <label className="tools-label">Altura (px)</label>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' }}>
+                                                {(() => {
+                                                    const minAlt = Number(datosEdicion.minAltura) || 200;
+                                                    const current = Math.max(minAlt, Number(datosEdicion.altura) || 300);
+                                                    return (
+                                                        <>
+                                                            <input
+                                                                type="range"
+                                                                min={minAlt}
+                                                                max="1200"
+                                                                step="10"
+                                                                value={current}
+                                                                onChange={(e) => {
+                                                                    const val = Math.max(minAlt, Number(e.target.value));
+                                                                    manejarCambio({ target: { name: 'altura', value: String(val) } });
+                                                                }}
+                                                            />
+                                                            <span style={{ fontSize: '0.9rem', color: '#333' }}>{current}px</span>
+                                                        </>
+                                                    );
+                                                })()}
+                                            </div>
+                                        </div>
+
+                                        {/* Ancho eliminado: el sitio será siempre fluido en ancho y se controla solo la altura */}
+                                    </div>
+                                </details>
+                            )}
                         <button className="btn-guardar" onClick={guardarCambios}>GUARDAR CAMBIOS</button>
                         </div>
                     ) : <p className="empty-selection-text">Selecciona una sección para editar.</p>}

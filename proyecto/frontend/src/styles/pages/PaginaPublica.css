@@ -9,3 +9,19 @@
     overflow-x: hidden;
     font-family: 'Nunito', sans-serif;
 }
+
+/* Forzar que las secciones públicas llenen el espacio disponible
+   y que su contenido interno se estire (evita inconsistencias con el editor) */
+.public-site-wrapper > div {
+    width: 100%;
+}
+
+.public-site-wrapper .seccion-wrapper-personalizada {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.public-site-wrapper .seccion-wrapper-personalizada > * {
+    height: 100%;
+    min-height: 0;
+}
