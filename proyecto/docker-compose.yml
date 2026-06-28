@@ -40,6 +40,9 @@ services:
     profiles: ["frontend"]
     ports:
       - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf 
+      - /var/www/certbot:/var/www/certbot           
     networks:
       - pymeweb-network
 
