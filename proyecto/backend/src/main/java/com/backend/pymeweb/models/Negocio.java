@@ -24,6 +24,9 @@ public class Negocio {
     @Column(nullable = false)
     private String tipoRubro;
 
+    @Column(unique = true)
+    private String slug;
+
     private String telefonoWhatsapp;
 
     private String logoUrl;

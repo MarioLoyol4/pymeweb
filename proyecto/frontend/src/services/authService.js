@@ -6,7 +6,9 @@ import {
   getToken,
   setNegocioId,
   getNegocioId as getStoredNegocioId,
-  clearNegocioId
+  clearNegocioId,
+  setSlug,
+  clearSlug
 } from './authStorage';
 
 const normalizarToken = (token) => {
@@ -55,6 +57,9 @@ export const login = async (payload) => {
   if (data?.jwt) {
     guardarSesion(data.jwt);
   }
+  if (data?.slug) {
+    setSlug(data.slug);
+  }
   return data;
 };
 
@@ -86,7 +91,10 @@ export const getNegocioId = () => {
   return null;
 };
 
+export { getSlug } from './authStorage';
+
 export const logout = () => {
   clearToken();
   clearNegocioId();
+  clearSlug();
 };
