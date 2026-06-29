@@ -54,7 +54,7 @@
 }
 
 .btn-login:hover {
-  background-color: rgba(0, 178, 178, 0.1);
+  background-color: var(--primary-hover);
 }
 
 .btn-comenzar {
@@ -109,7 +109,7 @@
   padding: 14px 35px;
   border-radius: var(--radius-md);
   display: inline-block;
-  box-shadow: 0 4px 15px rgba(245, 158, 40, 0.3);
+  box-shadow: 0 4px 15px rgba(251, 170, 31, 0.4); /* RGB mapeado desde var(--secondary-color) */
   transition: transform var(--transition-fast), background-color var(--transition-fast);
 }
 
@@ -186,10 +186,10 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* Colores de los círculos de iconos dinámicos */
-.bg-blue { background-color: var(--badge-blue-bg); }
-.bg-orange { background-color: var(--badge-orange-bg); }
-.bg-green { background-color: var(--badge-green-bg); }
+/* Colores de los círculos de iconos dinámicos vinculados a :root */
+.bg-badge-1 { background-color: var(--badge-1-bg); }
+.bg-badge-2 { background-color: var(--badge-2-bg); }
+.bg-badge-3 { background-color: var(--badge-3-bg); }
 
 .card-badge img {
   width: 24px;
@@ -225,10 +225,10 @@
   z-index: 1;
 }
 
-/* Colores de los números dinámicos */
-.color-blue { color: var(--badge-blue-num); }
-.color-orange { color: var(--badge-orange-num); }
-.color-green { color: var(--badge-green-num); }
+/* Colores de los números dinámicos vinculados a :root */
+.color-badge-1 { color: var(--badge-1-num); }
+.color-badge-2 { color: var(--badge-2-num); }
+.color-badge-3 { color: var(--badge-3-num); }
 
 /* --- Footer --- */
 .footer {

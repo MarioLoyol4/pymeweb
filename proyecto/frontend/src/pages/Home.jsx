@@ -29,7 +29,7 @@ function Home() {
         </div>
         
         <div className="hero-image-container">
-          <img src="/public/imagen1jpg.jpg" alt="Ilustración SimpliPyme" className="hero-illustration" />
+          <img src="/public/2.png" alt="Ilustración SimpliPyme" className="hero-illustration" />
         </div>
       </main>
 

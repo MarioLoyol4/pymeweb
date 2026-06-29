@@ -27,7 +27,7 @@ const Registro = () => {
 
           <div className="brand-logo">
             <span className="logo-icon">📦</span>
-            <strong>SimpliPyme</strong>
+            <strong>Pymeweb</strong>
           </div>
 
           <h1 className="hero-title">
@@ -37,8 +37,8 @@ const Registro = () => {
           <div className="hero-content-layout">
             <div className="hero-illustration-container">
               <img
-                src="/imagen1jpg.jpg"
-                alt="Registro SimpliPyme"
+                src="/1.png"
+                alt="Registro Pymeweb"
                 className="hero-image"
               />
             </div>
