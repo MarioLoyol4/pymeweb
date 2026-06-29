@@ -3,34 +3,33 @@
    ========================================================================== */
 :root {
   /* --- Colores de Marca Principales (Basados en paleta pastel) --- */
-  --primary-color: #a8a3f9;       /* Cian pastel */
-  --primary-hover: #7402a5;       /* Cian pastel oscurecido lógicamente para hover */
-  --secondary-color: #fbaa1f;     /* Rosa pastel: Color de acento */
-  --secondary-hover: #7402a5;     /* Rosa pastel oscurecido lógicamente para hover */
-
+  --primary-color: #a8a3f9;       
+  --primary-hover: #7402a5;       
+  --secondary-color: #fbaa1f;     
+  --secondary-hover: #7402a5;     
   /* --- Colores de Fondo y Superficie --- */
-  --background-color: #e8faf6;    /* Blanco apagado (extraído de la paleta) */
-  --surface-color: #ffffff;       /* Blanco puro para maximizar contraste de contenedores */
+  --background-color: #e8faf6;    
+  --surface-color: #ffffff;       
   
   /* --- Colores de Texto (Jerarquía y Legibilidad WCAG) --- */
-  --text-main: #1A1E23;           /* Oscuro necesario por el bajo contraste de los fondos */
-  --text-muted: #4A5568;          /* Gris medio para datos secundarios */
-  --text-light: #ffffff;          /* Modificado: El texto sobre botones pastel DEBE ser oscuro */
+  --text-main: #1A1E23;           
+  --text-muted: #4A5568;          
+  --text-light: #ffffff;          
 
     /* --- Acentuación Específica (Tarjetas de Beneficios e Iconos) --- */
   --badge-1-bg: #000000;          
-  --badge-1-num: #004A59;         /* Derivado oscuro para legibilidad */
+  --badge-1-num: #004A59;         
   
   --badge-2-bg: #B2F7EF;          
-  --badge-2-num: #00594F;         /* Derivado oscuro para legibilidad */
+  --badge-2-num: #00594F;         
   
   --badge-3-bg: #0c1805;          
-  --badge-3-num: #6E8649;         /* Derivado oscuro para legibilidad */
+  --badge-3-num: #6E8649;         
 
 
   /* --- Bordes y Elementos Estructurales --- */
-  --border-color: #00ffe1;        /* Menta pastel para delimitación de áreas */
-  --border-focus: #ffffff;        /* Foco rosa para accesibilidad en navegación por teclado */
+  --border-color: #00ffe1;        
+  --border-focus: #ffffff;       
 
   /* --- Tipografía, Radios y Animaciones unificadas --- */
   --font-main: 'Open Sans', system-ui, -apple-system, sans-serif;
