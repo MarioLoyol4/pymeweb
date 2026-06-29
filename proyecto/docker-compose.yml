@@ -40,6 +40,11 @@ services:
     profiles: ["frontend"]
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf 
+      - /var/www/certbot:/var/www/certbot
+      - /etc/letsencrypt:/etc/letsencrypt:ro
     networks:
       - pymeweb-network
 
@@ -49,6 +54,3 @@ volumes:
 networks:
   pymeweb-network:
     driver: bridge
-
-
-    
