@@ -6,7 +6,8 @@
     border-bottom: 2px solid #3A666B; 
     position: relative;
     overflow: hidden;
-    min-height: 800px;
+    height: 100%;
+    min-height: var(--seccion-min-height, 200px);
     display: flex;
     align-items: center;
     box-sizing: border-box;

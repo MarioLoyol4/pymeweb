@@ -1,6 +1,27 @@
-Como Funciona la aplicacion de Pymeweb
-1. Registre sus datos (correo, contraseña, nombre de la empresa y el rubro)
-2. Personalice como quisiera que se vea su empresa
-3. Dependiendo del rubro agregar productos si desea un sistema de inventario
-4. Agregue sus productos en caso de necesitar el sistema de inventario
-5. Y desplegar su pagina 
+# PymeWeb
+
+## 📖 Descripción del Proyecto
+PymeWeb es una plataforma web dinámica diseñada para permitir a distintos tipos de negocios y emprendimientos construir, personalizar y gestionar sus propias páginas web de manera intuitiva. El proyecto destaca por su enfoque escalable y general, permitiendo adaptar la interfaz a cualquier rubro sin depender de configuraciones estáticas o hardcodeadas. Los usuarios pueden personalizar secciones, alinear contenido, ajustar estilos de texto e inyectar configuraciones visuales en tiempo real a través de una arquitectura basada en contenedores.
+
+## 🛠️ Tecnologías Utilizadas
+El proyecto está construido utilizando una arquitectura moderna dividida en microservicios y desplegada en la nube:
+
+**Frontend:**
+* React.js
+* Vite
+
+**Backend & Base de Datos:**
+* Java
+* Spring Boot
+* MySQL
+
+**Infraestructura & DevOps:**
+* Docker & Docker Compose (Contenerización del entorno)
+* Nginx (Reverse Proxy y Servidor Web)
+* Amazon Web Services (AWS EC2)
+* GitHub Actions (Pipeline de Integración y Despliegue Continuo - CI/CD)
+
+## 👥 Estructura del Equipo
+* **Mario Loyola Cabrera** 
+* **Laura Fontecilla** 
+* **Delvis Santiago** 

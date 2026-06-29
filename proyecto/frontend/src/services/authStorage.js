@@ -1,5 +1,6 @@
 const TOKEN_KEY = 'simplipyme_token';
 const NEGOCIO_KEY = 'simplipyme_negocio_id';
+const SLUG_KEY = 'simplipyme_negocio_slug';
 
 export const getToken = () => {
   try {
@@ -48,6 +49,31 @@ export const setNegocioId = (negocioId) => {
 export const clearNegocioId = () => {
   try {
     localStorage.removeItem(NEGOCIO_KEY);
+  } catch {
+    // No-op
+  }
+};
+
+export const getSlug = () => {
+  try {
+    return localStorage.getItem(SLUG_KEY);
+  } catch {
+    return null;
+  }
+};
+
+export const setSlug = (slug) => {
+  if (!slug) return;
+  try {
+    localStorage.setItem(SLUG_KEY, slug);
+  } catch {
+    // No-op
+  }
+};
+
+export const clearSlug = () => {
+  try {
+    localStorage.removeItem(SLUG_KEY);
   } catch {
     // No-op
   }

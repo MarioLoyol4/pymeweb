@@ -23,31 +23,12 @@ const Login = () => {
 
         {/* ================= HERO IZQUIERDO ================= */}
         <section className="auth-hero">
-
-          <div className="brand-logo">
-            <span className="logo-icon">📦</span>
-            <strong>SimpliPyme</strong>
-          </div>
-
-          <h1 className="hero-title">
-            Tu panel listo para vender en minutos.
-          </h1>
-          <div className="hero-content-layout">
-            <div className="hero-illustration-container">
-              <img
-                src="/imagen1jpg.jpg"
-                alt="Registro SimpliPyme"
-                className="hero-image"
-              />
-            </div>
-
-            <p className="hero-subtitle">
-              Digitaliza tu negocio, administra tu página web y mantén toda la
-              información de tu negocio actualizada desde un solo lugar.
-            </p>
-         </div>
-
-          {/* Información adicional */}
+          <span className="auth-kicker">PymeWeb</span>
+          <h1>Tu panel listo para vender en minutos.</h1>
+          <p>
+            Ingresa para editar tu sitio, cambiar secciones y mantener tu pyme
+            siempre actualizada.
+          </p>
           <div className="auth-hero-card">
 
             <div className="hero-feature">

@@ -102,5 +102,5 @@ jobs:
           aws ssm send-command \
             --instance-ids "${{ secrets.EC2_FRONTEND_ID }}" \
             --document-name "AWS-RunShellScript" \
-            --parameters '{"commands":["sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest","sudo docker stop pymeweb-frontend || true","sudo docker rm pymeweb-frontend || true","sudo docker run -d --name pymeweb-frontend -p 80:80 ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest"]}' \
+            --parameters '{"commands":["sudo docker pull ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest","sudo docker stop pymeweb-frontend || true","sudo docker rm pymeweb-frontend || true","sudo docker run -d --name pymeweb-frontend -p 80:80 -p 443:443 -v /etc/letsencrypt:/etc/letsencrypt:ro -v /var/www/certbot:/var/www/certbot ${{ secrets.DOCKER_USERNAME }}/pymeweb-frontend:latest"]}' \
             --region us-east-1
