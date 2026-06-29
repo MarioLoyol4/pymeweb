@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import EditorWeb from './pages/EditorWeb.jsx';
 import PaginaPublica from './pages/PaginaPublica';
-import Home from "./pages/Home.jsx";
 import Login from './pages/Login.jsx';
 import Registro from './pages/Registro.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
