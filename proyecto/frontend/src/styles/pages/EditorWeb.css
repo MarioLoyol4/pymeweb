@@ -195,3 +195,55 @@
     background-color: #fff;
     border-top: 1px solid #ccc;
 }
+@media (max-width: 960px) {
+    .editor-container {
+        flex-direction: column;
+    }
+
+    .preview-panel {
+        width: 100%;
+        padding: 1rem;
+        order: 1;
+    }
+
+    .tools-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
+        padding: 1.5rem;
+        order: 2;
+        max-height: 50vh;
+    }
+
+    .top-toolbar {
+        gap: 8px;
+        padding: 10px 12px;
+    }
+
+    .btn-top-section,
+    .btn-view-public,
+    .btn-logout {
+        padding: 6px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .app-wrapper {
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .top-toolbar {
+        justify-content: flex-start;
+    }
+
+    .preview-panel {
+        padding: 0.5rem;
+    }
+
+    .tools-panel {
+        max-height: none;
+        padding: 1rem;
+    }
+}
