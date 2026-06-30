@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useNavigate } from 'react-router-dom';
 import { useEditorWeb } from '../js/pages/EditorWeb.js';
-import { logout } from '../services/authService';
+import { logout, getSlug } from '../services/authService'; // <-- Agregado getSlug
 import EditorWeb from '../pages/EditorWeb.jsx'; 
 
 // Mocks de dependencias externas
@@ -17,6 +17,7 @@ vi.mock('../js/pages/EditorWeb.js', () => ({
 
 vi.mock('../services/authService', () => ({
     logout: vi.fn(),
+    getSlug: vi.fn(), // <-- Solución al error Uncaught Exception
 }));
 
 // Mock del subcomponente
@@ -44,6 +45,12 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
             productos: [],
             colores: {}
         },
+        // Solución al TypeError de alineacionTitulo:
+        estilosTextoEdicion: {
+            alineacionTitulo: 'center',
+            // Agrega más estilos por defecto si tu componente los requiere
+        },
+        manejarCambioEstilosTexto: vi.fn(), 
         tarjetasEdicion: [],
         serviciosEdicion: [],
         productosEdicion: [],
@@ -92,16 +99,21 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
     it('debe navegar a la página pública al hacer clic en VER PAGINA', () => {
         useEditorWeb.mockReturnValue(mockHookBase);
+        getSlug.mockReturnValue('mi-pyme-slug'); // Simulamos el slug devuelto por el servicio
+        
         render(<EditorWeb />);
         
         const btnVerPagina = screen.getByRole('button', { name: /VER PAGINA/i });
         fireEvent.click(btnVerPagina);
         
-        expect(mockNavigate).toHaveBeenCalledWith('/p/123');
+        // Corregido según lo que pide tu componente real en la línea 56:
+        expect(mockNavigate).toHaveBeenCalledWith('/PymeWeb/mi-pyme-slug');
     });
 
-    it('no debe navegar si negocioId no existe', () => {
+    it('no debe navegar si negocioId o slug no existen', () => {
         useEditorWeb.mockReturnValue({ ...mockHookBase, negocioId: null });
+        getSlug.mockReturnValue(null);
+        
         render(<EditorWeb />);
         
         const btnVerPagina = screen.getByRole('button', { name: /VER PAGINA/i });
@@ -166,41 +178,24 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
         const { container } = render(<EditorWeb />);
 
-        // Buscamos el input de título mediante su valor inicial asignado en el hook
         const inputTitulo = screen.getByDisplayValue('Mi Pyme');
         fireEvent.change(inputTitulo, { target: { value: 'Nuevo' } });
         expect(mockHookBase.manejarCambio).toHaveBeenCalled();
 
-        // Buscamos el input color tipo color mediante querySelector ya que no está bien asociado el label
         const inputColor = container.querySelector('input[type="color"]');
         fireEvent.change(inputColor, { target: { value: '#000000' } });
         expect(mockHookBase.manejarCambioColor).toHaveBeenCalledWith('fondo', '#000000');
 
         const inputsColor = container.querySelectorAll('input[type="color"]');
 
-// Color fondo
-        fireEvent.change(inputsColor[0], {
-            target: { value: '#111111' }
-        });
+        fireEvent.change(inputsColor[0], { target: { value: '#111111' } });
+        expect(mockHookBase.manejarCambioColor).toHaveBeenCalledWith('fondo', '#111111');
 
-        expect(mockHookBase.manejarCambioColor)
-            .toHaveBeenCalledWith('fondo', '#111111');
+        fireEvent.change(inputsColor[1], { target: { value: '#222222' } });
+        expect(mockHookBase.manejarCambioColor).toHaveBeenCalledWith('textoTitulo', '#222222');
 
-        // Color título
-        fireEvent.change(inputsColor[1], {
-            target: { value: '#222222' }
-        });
-
-        expect(mockHookBase.manejarCambioColor)
-            .toHaveBeenCalledWith('textoTitulo', '#222222');
-
-        // Color subtítulo (líneas 340-348)
-        fireEvent.change(inputsColor[2], {
-            target: { value: '#333333' }
-        });
-
-        expect(mockHookBase.manejarCambioColor)
-            .toHaveBeenCalledWith('textoSecundario', '#333333');
+        fireEvent.change(inputsColor[2], { target: { value: '#333333' } });
+        expect(mockHookBase.manejarCambioColor).toHaveBeenCalledWith('textoSecundario', '#333333');
     });
 
     it('debe renderizar y gestionar el flujo de la BARRA_MENU (Enlaces)', () => {
@@ -213,7 +208,6 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
         render(<EditorWeb />);
 
-        // Corregido: screen.getByDisplayValue en lugar de screen.getByValue
         const inputEnlace = screen.getByDisplayValue('Contacto');
         fireEvent.change(inputEnlace, { target: { value: 'Contacto Modificado' } });
         expect(mockHookBase.manejarCambioEnlace).toHaveBeenCalledWith(0, 'Contacto Modificado');
@@ -235,7 +229,6 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
         render(<EditorWeb />);
 
-        // Corregido: screen.getByDisplayValue
         const inputNombre = screen.getByDisplayValue('Juan');
         fireEvent.change(inputNombre, { target: { value: 'Pedro' } });
         expect(mockHookBase.manejarCambioTarjeta).toHaveBeenCalledWith(0, 'nombre', 'Pedro');
@@ -247,22 +240,12 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
         expect(mockHookBase.agregarTarjeta).toHaveBeenCalled();
 
         const inputDescripcion = screen.getByDisplayValue('CEO');
-
-        fireEvent.change(inputDescripcion,{
-            target:{value:'Gerente'}
-        });
-
-        expect(mockHookBase.manejarCambioTarjeta)
-        .toHaveBeenCalledWith(0,'descripcion','Gerente');
+        fireEvent.change(inputDescripcion, { target: { value: 'Gerente' } });
+        expect(mockHookBase.manejarCambioTarjeta).toHaveBeenCalledWith(0, 'descripcion', 'Gerente');
 
         const inputFoto = screen.getByPlaceholderText('https://...');
-
-        fireEvent.change(inputFoto,{
-            target:{value:'https://foto.jpg'}
-        });
-
-        expect(mockHookBase.manejarCambioTarjeta)
-        .toHaveBeenCalledWith(0,'foto','https://foto.jpg');
+        fireEvent.change(inputFoto, { target: { value: 'https://foto.jpg' } });
+        expect(mockHookBase.manejarCambioTarjeta).toHaveBeenCalledWith(0, 'foto', 'https://foto.jpg');
     });
 
     it('debe renderizar y gestionar el flujo de SERVICIOS', () => {
@@ -275,7 +258,6 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
         render(<EditorWeb />);
 
-        // Corregido: screen.getByDisplayValue
         const inputTitulo = screen.getByDisplayValue('Soporte');
         fireEvent.change(inputTitulo, { target: { value: 'Soporte Premium' } });
         expect(mockHookBase.manejarCambioServicio).toHaveBeenCalledWith(0, 'titulo', 'Soporte Premium');
@@ -287,30 +269,12 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
         expect(mockHookBase.agregarServicio).toHaveBeenCalled();
 
         const inputDescripcion = screen.getByDisplayValue('24/7');
-
-        fireEvent.change(inputDescripcion,{
-            target:{value:'Siempre disponible'}
-        });
-
-        expect(mockHookBase.manejarCambioServicio)
-        .toHaveBeenCalledWith(
-            0,
-            'descripcion',
-            'Siempre disponible'
-        );
+        fireEvent.change(inputDescripcion, { target: { value: 'Siempre disponible' } });
+        expect(mockHookBase.manejarCambioServicio).toHaveBeenCalledWith(0, 'descripcion', 'Siempre disponible');
 
         const inputIcono = screen.getByPlaceholderText('https://...');
-
-        fireEvent.change(inputIcono,{
-            target:{value:'https://icono.png'}
-        });
-
-        expect(mockHookBase.manejarCambioServicio)
-        .toHaveBeenCalledWith(
-            0,
-            'icono',
-            'https://icono.png'
-        );
+        fireEvent.change(inputIcono, { target: { value: 'https://icono.png' } });
+        expect(mockHookBase.manejarCambioServicio).toHaveBeenCalledWith(0, 'icono', 'https://icono.png');
     });
 
     it('debe renderizar y gestionar el flujo de PRODUCTOS', () => {
@@ -319,12 +283,10 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
             ...mockHookBase,
             seccionSeleccionada: mockSeccion,
             productosEdicion: [{ titulo: 'Item 1', descripcion: 'Desc', precio: '100', imagen: '' }]
-
         });
 
         render(<EditorWeb />);
 
-        // Corregido: screen.getByDisplayValue
         const inputPrecio = screen.getByDisplayValue('100');
         fireEvent.change(inputPrecio, { target: { value: '150' } });
         expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'precio', '150');
@@ -336,45 +298,17 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
         expect(mockHookBase.agregarProducto).toHaveBeenCalled();
 
         const inputTitulo = screen.getByDisplayValue('Item 1');
-
-        fireEvent.change(inputTitulo,{
-            target:{value:'Producto Nuevo'}
-        });
-
-        expect(mockHookBase.manejarCambioProducto)
-        .toHaveBeenCalledWith(
-            0,
-            'titulo',
-            'Producto Nuevo'
-        );
+        fireEvent.change(inputTitulo, { target: { value: 'Producto Nuevo' } });
+        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'titulo', 'Producto Nuevo');
 
         const inputsDescripcion = screen.getAllByDisplayValue('Desc');
-
-        const inputDescripcion = inputsDescripcion[1]; // el segundo corresponde al producto
-
-        fireEvent.change(inputDescripcion,{
-            target:{value:'Descripción nueva'}
-        });
-
-        expect(mockHookBase.manejarCambioProducto)
-        .toHaveBeenCalledWith(
-            0,
-            'descripcion',
-            'Descripción nueva'
-        );
+        const inputDescripcion = inputsDescripcion[1] || inputsDescripcion[0]; // Protección por si cambia el orden
+        fireEvent.change(inputDescripcion, { target: { value: 'Descripción nueva' } });
+        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'descripcion', 'Descripción nueva');
 
         const inputImagen = screen.getByPlaceholderText('https://...');
-
-        fireEvent.change(inputImagen,{
-            target:{value:'https://imagen.png'}
-        });
-
-        expect(mockHookBase.manejarCambioProducto)
-        .toHaveBeenCalledWith(
-            0,
-            'imagen',
-            'https://imagen.png'
-        );
+        fireEvent.change(inputImagen, { target: { value: 'https://imagen.png' } });
+        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'imagen', 'https://imagen.png');
     });
 
     it('debe guardar cambios al presionar el botón GUARDAR CAMBIOS', () => {

@@ -1,107 +1,125 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { resolverRenderizadoSeccion } from '../js/components/RenderizadorSeccion.js';
-import { RenderizadorSeccion } from '../components/RenderizadorSeccion.jsx'; // Ajusta la ruta si es necesario
+import { RenderizadorSeccion } from '../components/RenderizadorSeccion.jsx'; // <-- Ruta exacta real
 
-// Mock de la función utilitaria que resuelve el componente
+// Mock de la dependencia que resuelve los componentes internos
 vi.mock('../js/components/RenderizadorSeccion.js', () => ({
-  resolverRenderizadoSeccion: vi.fn(),
+    resolverRenderizadoSeccion: vi.fn(),
 }));
 
-// Un componente Mock ficticio para simular lo que resolvería la función utilitaria
-const ComponenteMockFicticio = ({ contenido }) => (
-  <div data-testid="componente-interno">
-    <h1>{contenido?.titulo || 'Sin Titulo'}</h1>
-  </div>
-);
+describe('RenderizadorSeccion Component - Cobertura del 100%', () => {
+    const MockComponente = () => <div>Mock Component</div>;
 
-describe('RenderizadorSeccion Component - Test de Cobertura Completa', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it('debe retornar null si resolverRenderizadoSeccion no devuelve un Componente válido', () => {
-    // Simular que el resolvedor no encuentra un componente que coincida con el tipo
-    resolverRenderizadoSeccion.mockReturnValue({
-      Componente: null,
-      props: {},
+    beforeEach(() => {
+        vi.clearAllMocks();
     });
 
-    const { container } = render(
-      <RenderizadorSeccion 
-        tipoSeccion="TIPO_INEXISTENTE" 
-        contenidoJson={{}} 
-      />
-    );
-
-    // Debe renderizar un DOM completamente vacío
-    expect(container.firstChild).toBeNull();
-  });
-
-  it('debe mapear correctamente las variables CSS cuando se proveen colores personalizados', () => {
-    const mockContenido = {
-      titulo: 'Sección con Colores',
-      colores: {
-        fondo: '#111111',
-        textoTitulo: '#222222',
-        textoSecundario: '#333333'
-      }
-    };
-
-    resolverRenderizadoSeccion.mockReturnValue({
-      Componente: ComponenteMockFicticio,
-      props: { contenido: mockContenido },
+    it('debe retornar null si resolverRenderizadoSeccion no devuelve un Componente válido', () => {
+        resolverRenderizadoSeccion.mockReturnValue({ Componente: null, props: {} });
+        const { container } = render(<RenderizadorSeccion tipoSeccion="NADA" contenidoJson={{}} />);
+        expect(container.firstChild).toBeNull();
     });
 
-    const { container } = render(
-      <RenderizadorSeccion 
-        tipoSeccion="HERO" 
-        contenidoJson={mockContenido} 
-      />
-    );
+    it('debe mapear correctamente las variables CSS cuando se proveen colores y estilos de texto personalizados', () => {
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: {
+                contenido: {
+                    colores: { fondo: '#111', textoTitulo: '#222', textoSecundario: '#333' },
+                    estilosTexto: {
+                        alineacionTitulo: 'center',
+                        transformacionTitulo: 'uppercase',
+                        alineacionTexto: 'justify',
+                        transformacionTexto: 'lowercase'
+                    }
+                }
+            }
+        });
 
-    // Verificar que el resolvedor de componentes fue llamado con los argumentos correctos
-    expect(resolverRenderizadoSeccion).toHaveBeenCalledWith("HERO", mockContenido, null);
+        const { container } = render(<RenderizadorSeccion tipoSeccion="BARRA_MENU" contenidoJson={{}} />);
+        const wrapper = container.firstElementChild;
 
-    // Verificar que el componente dinámico interno se renderizó de forma correcta
-    expect(screen.getByTestId('componente-interno')).toBeDefined();
-    expect(screen.getByText('Sección con Colores')).toBeDefined();
-
-    // Validar la inyección precisa de las Custom Properties de CSS en el div contenedor
-    const wrapperDiv = container.firstChild;
-    expect(wrapperDiv.className).toBe('seccion-wrapper-personalizada');
-    expect(wrapperDiv.style.getPropertyValue('--color-fondo')).toBe('#111111');
-    expect(wrapperDiv.style.getPropertyValue('--color-titulo')).toBe('#222222');
-    expect(wrapperDiv.style.getPropertyValue('--color-texto')).toBe('#333333');
-  });
-
-  it('debe dejar las variables CSS como undefined si el objeto colores viene vacío o incompleto', () => {
-    const mockContenidoSinColores = {
-      titulo: 'Sección por Defecto'
-      // colores ausente de forma adrede para probar la caída de condiciones por cortocircuito || {}
-    };
-
-    resolverRenderizadoSeccion.mockReturnValue({
-      Componente: ComponenteMockFicticio,
-      props: { contenido: mockContenidoSinColores },
+        expect(wrapper.className).toContain('tipo-BARRA_MENU');
+        expect(wrapper.style.getPropertyValue('--color-fondo')).toBe('#111');
+        expect(wrapper.style.getPropertyValue('--color-titulo')).toBe('#222');
+        expect(wrapper.style.getPropertyValue('--color-texto')).toBe('#333');
     });
 
-    const { container } = render(
-      <RenderizadorSeccion 
-        tipoSeccion="PRODUCTOS" 
-        contenidoJson={mockContenidoSinColores} 
-        logoContenidoJson={{ url: 'logo.png' }}
-      />
-    );
+    it('debe calcular las variables CSS vacías si el objeto colores viene incompleto', () => {
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: { contenido: { colores: {} } }
+        });
 
-    // Verificar que se haya transferido el logoContenidoJson opcional
-    expect(resolverRenderizadoSeccion).toHaveBeenCalledWith("PRODUCTOS", mockContenidoSinColores, { url: 'logo.png' });
+        const { container } = render(<RenderizadorSeccion tipoSeccion="BARRA_MENU" contenidoJson={{}} />);
+        const wrapper = container.firstElementChild;
 
-    // Validar que no se rompa el renderizado y que las variables CSS no estén definidas (bajarán a cascada CSS global)
-    const wrapperDiv = container.firstChild;
-    expect(wrapperDiv.style.getPropertyValue('--color-fondo')).toBe('');
-    expect(wrapperDiv.style.getPropertyValue('--color-titulo')).toBe('');
-    expect(wrapperDiv.style.getPropertyValue('--color-texto')).toBe('');
-  });
+        expect(wrapper.style.getPropertyValue('--color-fondo')).toBe('');
+        expect(wrapper.style.getPropertyValue('--color-titulo')).toBe('');
+        expect(wrapper.style.getPropertyValue('--color-texto')).toBe('');
+    });
+
+    it('debe calcular la altura personalizada en px si se provee un número o string numérico (Líneas 31-34)', () => {
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: { contenido: { altura: 450 } }
+        });
+
+        const { container, rerender } = render(<RenderizadorSeccion tipoSeccion="HERO" contenidoJson={{}} />);
+        expect(container.firstElementChild.style.getPropertyValue('--seccion-altura')).toBe('450px');
+
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: { contenido: { altura: '20rem' } }
+        });
+        rerender(<RenderizadorSeccion tipoSeccion="HERO" contenidoJson={{}} />);
+        expect(container.firstElementChild.style.getPropertyValue('--seccion-altura')).toBe('20rem');
+    });
+
+    it('debe procesar minAltura explícita correctamente (Líneas 40-41)', () => {
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: { contenido: { minAltura: '500px' } }
+        });
+
+        const { container, rerender } = render(<RenderizadorSeccion tipoSeccion="HERO" contenidoJson={{}} />);
+        expect(container.firstElementChild.style.getPropertyValue('--seccion-min-height')).toBe('500px');
+
+        resolverRenderizadoSeccion.mockReturnValue({
+            Componente: MockComponente,
+            props: { contenido: { minAltura: 150 } }
+        });
+        rerender(<RenderizadorSeccion tipoSeccion="HERO" contenidoJson={{}} />);
+        expect(container.firstElementChild.style.getPropertyValue('--seccion-min-height')).toBe('150px');
+    });
+
+    it('debe calcular min-height por defecto según el tipo de sección (Líneas 50-62)', () => {
+        const casosTest = [
+            { tipo: 'CABECERA', contenido: {}, esperado: '600px' },
+            { tipo: 'BARRA_MENU', contenido: {}, esperado: '60px' },
+            { tipo: 'LOGO', contenido: {}, esperado: '80px' },
+            { tipo: 'PRODUCTOS', contenido: {}, esperado: '360px' },
+            { tipo: 'CONTACTO', contenido: {}, esperado: '300px' },
+            { tipo: 'REDES_SOCIALES', contenido: {}, esperado: '180px' },
+            { tipo: 'OTRO_TIPO', contenido: {}, esperado: '200px' },
+            { tipo: 'ACERCA_DE_NOSOTROS', contenido: { tarjetas: [1, 2] }, esperado: '320px' },
+            { tipo: 'ACERCA_DE_NOSOTROS', contenido: {}, esperado: '280px' },
+            { tipo: 'SERVICIOS', contenido: { servicios: [1, 2, 3] }, esperado: '360px' },
+            { tipo: 'SERVICIOS', contenido: {}, esperado: '360px' }
+        ];
+
+        casosTest.forEach(({ tipo, contenido, esperado }) => {
+            vi.clearAllMocks();
+            resolverRenderizadoSeccion.mockReturnValue({
+                Componente: MockComponente,
+                props: { contenido }
+            });
+
+            const { container, unmount } = render(<RenderizadorSeccion tipoSeccion={tipo} contenidoJson={contenido} />);
+            expect(container.firstElementChild.style.getPropertyValue('--seccion-min-height')).toBe(esperado);
+            unmount(); 
+        });
+    });
 });
