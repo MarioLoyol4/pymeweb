@@ -1,125 +1,154 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom/vitest';
 import { MemoryRouter } from 'react-router-dom';
-import Login from './Login'; // Ajusta la ruta según tu estructura
-import { useLogin } from '../js/pages/Login.js'; // Ajusta la ruta según tu estructura
+import { describe, test, expect, vi, beforeEach } from 'vitest';
 
-// 1. Mockear el hook personalizado para controlar sus estados en cada test
-jest.mock('../js/pages/Login.js', () => ({
-  useLogin: jest.fn(),
+import Login from '../pages/Login.jsx';
+import { useLogin } from '../js/pages/Login.js';
+
+vi.mock('../js/pages/Login.js', () => ({
+    useLogin: vi.fn()
 }));
 
-describe('Pruebas unitarias para el componente <Login />', () => {
-  // Valores por defecto para el hook en cada prueba limpia
-  const funcionesMock = {
-    form: { email: '', password: '' },
-    error: null,
-    loading: false,
-    registroOK: false,
-    manejarCambio: jest.fn(),
-    manejarSubmit: jest.fn(),
-  };
+describe('Pruebas Unitarias para el Componente Login', () => {
+  // Funciones mock de espionaje para simular las acciones del usuario
+  const manejarCambioMock = vi.fn();
+  const manejarSubmitMock = vi.fn(e => e.preventDefault());
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    useLogin.mockReturnValue(funcionesMock);
+    vi.clearAllMocks();
   });
 
-  test('Debería renderizar la estructura básica, textos de marketing y campos del formulario', () => {
-    render(
+  // Helper para renderizar el componente envuelto en un Router (necesario por el uso de <Link>)
+  const renderComponent = () => {
+    return render(
       <MemoryRouter>
         <Login />
       </MemoryRouter>
     );
+  };
 
-    // Verificar textos del Hero (Marketing)
-    expect(screen.getByText('SimpliPyme')).toBeInTheDocument();
+  test('Debería renderizar correctamente el formulario con sus campos vacíos', () => {
+    // Definimos el estado inicial simulado
+    useLogin.mockReturnValue({
+      form: { email: '', password: '' },
+      error: null,
+      loading: false,
+      registroOK: false,
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
+    });
+
+    renderComponent();
+
+    // Verificar textos del Hero
     expect(screen.getByText('Tu panel listo para vender en minutos.')).toBeInTheDocument();
+    
+    // Verificar que los inputs existan
+    const emailInput = screen.getByLabelText(/correo electrónico/i);
+    const passwordInput = screen.getByLabelText(/contraseña/i);
+    
+    expect(emailInput).toBeInTheDocument();
+    expect(emailInput.value).toBe('');
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput.value).toBe('');
 
-    // Verificar elementos del formulario
-    expect(screen.getByLabelText(/Correo electrónico/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Contraseña/i)).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Entrar al editor/i })).toBeInTheDocument();
+    // Verificar botón
+    expect(screen.getByRole('button', { name: /entrar al editor/i })).toBeInTheDocument();
   });
 
-  test('Debería mostrar el mensaje de éxito cuando "registroOK" es verdadero', () => {
+  test('Debería mostrar un mensaje de éxito cuando registroOK es verdadero', () => {
     useLogin.mockReturnValue({
-      ...funcionesMock,
-      registroOK: true,
+      form: { email: '', password: '' },
+      error: null,
+      loading: false,
+      registroOK: true, // <-- Activamos la alerta
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
     });
 
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
-    );
+    renderComponent();
 
-    const alertaExito = screen.getByText(/Cuenta creada correctamente. Ahora puedes iniciar sesión./i);
+    const alertaExito = screen.getByText(/cuenta creada correctamente/i);
     expect(alertaExito).toBeInTheDocument();
-    expect(alertaExito).toHaveClass('success');
+    expect(alertaExito).toHaveClass('auth-alert success');
   });
 
-  test('Debería mostrar un mensaje de error cuando "error" contiene un texto', () => {
-    const mensajeError = 'Credenciales incorrectas';
+  test('Debería mostrar un mensaje de error cuando la API falla', () => {
     useLogin.mockReturnValue({
-      ...funcionesMock,
-      error: mensajeError,
+      form: { email: 'test@error.com', password: '123' },
+      error: 'Credenciales inválidas', // <-- Activamos el error
+      loading: false,
+      registroOK: false,
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
     });
 
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
-    );
+    renderComponent();
 
-    const alertaError = screen.getByText(mensajeError);
+    const alertaError = screen.getByText('Credenciales inválidas');
     expect(alertaError).toBeInTheDocument();
-    expect(alertaError).toHaveClass('error');
+    expect(alertaError).toHaveClass('auth-alert error');
   });
 
-  test('Debería deshabilitar el botón y cambiar el texto cuando "loading" es verdadero', () => {
+  test('Debería deshabilitar el botón y cambiar el texto cuando está en estado de carga (loading)', () => {
     useLogin.mockReturnValue({
-      ...funcionesMock,
-      loading: true,
+      form: { email: 'ejemplo@gmail.com', password: 'password123' },
+      error: null,
+      loading: true, // <-- Activamos el spinner/loading
+      registroOK: false,
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
     });
 
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
-    );
+    renderComponent();
 
-    const boton = screen.getByRole('button', { name: /Ingresando.../i });
-    expect(boton).toBeDisabled();
+    const botonSubmit = screen.getByRole('button', {
+    name: /ingresando/i
+  });
+    expect(botonSubmit).toBeDisabled();
+    expect(botonSubmit).toHaveTextContent('Ingresando...');
   });
 
-  test('Debería llamar a "manejarCambio" cuando el usuario escribe en los inputs', () => {
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
-    );
+  test('Debería llamar a manejarCambio cuando el usuario escribe en los inputs', () => {
+    useLogin.mockReturnValue({
+      form: { email: '', password: '' },
+      error: null,
+      loading: false,
+      registroOK: false,
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
+    });
 
-    const inputEmail = screen.getByLabelText(/Correo electrónico/i);
+    renderComponent();
+
+    const emailInput = screen.getByLabelText(/correo electrónico/i);
     
-    // Simular que el usuario escribe un correo electrónico
-    fireEvent.change(inputEmail, { target: { value: 'test@correo.com' } });
+    // Simulamos que el usuario escribe un correo
+    fireEvent.change(emailInput, { target: { value: 'usuario@pyme.com' } });
 
-    expect(funcionesMock.manejarCambio).toHaveBeenCalledTimes(1);
+    // Verificamos que el hook se entere del cambio
+    expect(manejarCambioMock).toHaveBeenCalledTimes(1);
   });
 
-  test('Debería llamar a "manejarSubmit" cuando se envía el formulario', () => {
-    render(
-      <MemoryRouter>
-        <Login />
-      </MemoryRouter>
-    );
+  test('Debería llamar a manejarSubmit al enviar el formulario', () => {
+    useLogin.mockReturnValue({
+      form: { email: 'usuario@pyme.com', password: 'password123' },
+      error: null,
+      loading: false,
+      registroOK: false,
+      manejarCambio: manejarCambioMock,
+      manejarSubmit: manejarSubmitMock
+    });
 
-    const botonSubmit = screen.getByRole('button', { name: /Entrar al editor/i });
+    renderComponent();
+
+    const botonSubmit = screen.getByRole('button', { name: /entrar al editor/i });
     
-    // Simular el clic / envío del formulario
+    // Simulamos el click/submit
     fireEvent.click(botonSubmit);
 
-    expect(funcionesMock.manejarSubmit).toHaveBeenCalledTimes(1);
+    expect(manejarSubmitMock).toHaveBeenCalledTimes(1);
   });
 });
