@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import '../styles/pages/Home.css';
+import { Logo } from '../components/Logo'; 
 
 function Home() {
   return (
@@ -7,8 +8,8 @@ function Home() {
       {/* 1. BARRA DE NAVEGACIÓN */}
       <nav className="navbar">
         <div className="logo-container">
-          <img src="/public/imagen1jpg.jpg" alt="SimpliPyme Logo" className="logo-img" />
-          <span className="logo-text">SimpliPyme</span>
+          <Logo width="40px" height="40px" className="logo-img" />
+          <span className="logo-text">PymeWeb</span>
         </div>
         <div className="nav-buttons">
           <Link to="/login" className="btn-login">Iniciar sesión</Link>
@@ -75,10 +76,10 @@ function Home() {
 
       <footer className="footer">
         <div className="footer-logo">
-          <img src="/public/imagen1jpg.jpg" alt="SimpliPyme Logo" />
-          <span>SimpliPyme</span>
+          <Logo width="40px" height="40px" className="logo-img" />
+          <span>PymeWeb</span>
         </div>
-        <p className="footer-copyright">Derechos reservados @ 2026 SimpliPyme</p>
+        <p className="footer-copyright">Derechos reservados @ 2026 PymeWeb</p>
       </footer>
     </div>
   );

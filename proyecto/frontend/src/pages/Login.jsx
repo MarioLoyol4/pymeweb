@@ -26,7 +26,7 @@ const Login = () => {
 
           <div className="brand-logo">
             <span className="logo-icon">📦</span>
-            <strong>SimpliPyme</strong>
+            <strong>PymeWeb</strong>
           </div>
 
           <h1 className="hero-title">
@@ -36,7 +36,7 @@ const Login = () => {
             <div className="hero-illustration-container">
               <img
                 src="/imagen1jpg.jpg"
-                alt="Registro SimpliPyme"
+                alt="Registro PymeWeb"
                 className="hero-image"
               />
             </div>
