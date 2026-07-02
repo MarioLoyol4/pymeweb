@@ -73,3 +73,22 @@
     color: #d8e9e9;
     line-height: 1.4;
 }
+@media (max-width: 960px) {
+    .conocenos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .diseno-conocenos {
+        padding: 32px 20px;
+    }
+
+    .conocenos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .conocenos-header h2 {
+        font-size: 1.5rem;
+    }
+}
