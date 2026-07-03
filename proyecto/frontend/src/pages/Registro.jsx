@@ -26,8 +26,8 @@ const Registro = () => {
         <section className="auth-hero">
 
           <div className="brand-logo">
-            <span className="logo-icon">📦</span>
-            <strong>Pymeweb</strong>
+            <img src="/logo.png" alt="Logo PymeWeb" className="logo-icon"/>
+            <strong>PymeWeb</strong>
           </div>
 
           <h1 className="hero-title">
