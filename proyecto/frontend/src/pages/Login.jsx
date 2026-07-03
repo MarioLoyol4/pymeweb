@@ -25,7 +25,7 @@ const Login = () => {
         <section className="auth-hero">
 
           <div className="brand-logo">
-            <span className="logo-icon">📦</span>
+            <img src="/logo.png" alt="Logo PymeWeb" className="logo-icon"/>
             <strong>PymeWeb</strong>
           </div>
 
@@ -35,7 +35,7 @@ const Login = () => {
           <div className="hero-content-layout">
             <div className="hero-illustration-container">
               <img
-                src="/imagen1jpg.jpg"
+                src="/3.png"
                 alt="Registro PymeWeb"
                 className="hero-image"
               />
