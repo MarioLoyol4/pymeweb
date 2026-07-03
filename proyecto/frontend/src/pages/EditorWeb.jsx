@@ -58,7 +58,7 @@ const EditorWeb = () => {
 
     const manejarCerrarSesion = () => {
         logout();
-        navigate('/login');
+        navigate('/');
     };
 
     return (
