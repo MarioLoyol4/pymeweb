@@ -5,6 +5,7 @@ import PaginaPublica from './pages/PaginaPublica';
 import Login from './pages/Login.jsx';
 import Registro from './pages/Registro.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import InventarioPage from "./pages/InventarioPage";
 
 function App() {
   return (
@@ -23,6 +24,15 @@ function App() {
           )}
         />
         <Route path="/PymeWeb/:slug" element={<PaginaPublica />} />
+        <Route
+          path="/inventario"
+          element={(
+            <ProtectedRoute>
+              <InventarioPage />
+            </ProtectedRoute>
+          )}
+        />
+        <Route path="*" element={<div style={{ padding: 40 }}>Página no encontrada</div>} />
       </Routes>
     </Router>
   );

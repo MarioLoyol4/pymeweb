@@ -130,7 +130,7 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
         fireEvent.click(btnLogout);
         
         expect(logout).toHaveBeenCalled();
-        expect(mockNavigate).toHaveBeenCalledWith('/login');
+        expect(mockNavigate).toHaveBeenCalledWith('/');
     });
 
     it('debe activar eventos de Drag and Drop en los botones superiores', () => {
@@ -287,28 +287,10 @@ describe('EditorWeb Component - Test de Cobertura Completa', () => {
 
         render(<EditorWeb />);
 
-        const inputPrecio = screen.getByDisplayValue('100');
-        fireEvent.change(inputPrecio, { target: { value: '150' } });
-        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'precio', '150');
+        expect(screen.getByText(/Los productos se gestionan desde el inventario/i)).toBeDefined();
 
-        fireEvent.click(screen.getByRole('button', { name: /ELIMINAR PRODUCTO/i }));
-        expect(mockHookBase.eliminarProducto).toHaveBeenCalledWith(0);
-
-        fireEvent.click(screen.getByRole('button', { name: /AGREGAR PRODUCTO/i }));
-        expect(mockHookBase.agregarProducto).toHaveBeenCalled();
-
-        const inputTitulo = screen.getByDisplayValue('Item 1');
-        fireEvent.change(inputTitulo, { target: { value: 'Producto Nuevo' } });
-        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'titulo', 'Producto Nuevo');
-
-        const inputsDescripcion = screen.getAllByDisplayValue('Desc');
-        const inputDescripcion = inputsDescripcion[1] || inputsDescripcion[0]; // Protección por si cambia el orden
-        fireEvent.change(inputDescripcion, { target: { value: 'Descripción nueva' } });
-        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'descripcion', 'Descripción nueva');
-
-        const inputImagen = screen.getByPlaceholderText('https://...');
-        fireEvent.change(inputImagen, { target: { value: 'https://imagen.png' } });
-        expect(mockHookBase.manejarCambioProducto).toHaveBeenCalledWith(0, 'imagen', 'https://imagen.png');
+        fireEvent.click(screen.getByRole('button', { name: /IR AL INVENTARIO/i }));
+        expect(mockNavigate).toHaveBeenCalledWith('/inventario');
     });
 
     it('debe guardar cambios al presionar el botón GUARDAR CAMBIOS', () => {
