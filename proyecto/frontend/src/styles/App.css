@@ -1,1 +1,58 @@
-/* SIN ESTILOS */
+/* ==========================================================================
+   1. VARIABLES Y CONFIGURACIÓN GLOBAL (Design Tokens)
+   ========================================================================== */
+:root {
+  /* --- Colores de Marca Principales (Basados en paleta pastel) --- */
+  --primary-color: #a8a3f9;       
+  --primary-hover: #7402a5;       
+  --secondary-color: #fbaa1f;     
+  --secondary-hover: #7402a5;     
+  /* --- Colores de Fondo y Superficie --- */
+  --background-color: #e8faf6;    
+  --surface-color: #ffffff;       
+  
+  /* --- Colores de Texto (Jerarquía y Legibilidad WCAG) --- */
+  --text-main: #1A1E23;           
+  --text-muted: #4A5568;          
+  --text-light: #ffffff;          
+
+    /* --- Acentuación Específica (Tarjetas de Beneficios e Iconos) --- */
+  --badge-1-bg: #000000;          
+  --badge-1-num: #004A59;         
+  
+  --badge-2-bg: #B2F7EF;          
+  --badge-2-num: #00594F;         
+  
+  --badge-3-bg: #0c1805;          
+  --badge-3-num: #6E8649;         
+
+
+  /* --- Bordes y Elementos Estructurales --- */
+  --border-color: #00ffe1;        
+  --border-focus: #ffffff;       
+
+  /* --- Tipografía, Radios y Animaciones unificadas --- */
+  --font-main: 'Open Sans', system-ui, -apple-system, sans-serif;
+  --font-title: 'Montserrat', sans-serif;
+  --radius-sm: 4px;               
+  --radius-md: 8px;               
+  --radius-lg: 32px;              
+  --transition-fast: 0.2s ease-in-out;
+  --box-shadow-smooth: 0 4px 6px rgba(0, 0, 0, 0.05); 
+}
+
+/* Reset básico */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--background-color);
+  color: var(--text-main);
+  line-height: 1.6; 
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

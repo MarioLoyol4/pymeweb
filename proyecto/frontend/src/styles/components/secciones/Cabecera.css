@@ -1,4 +1,3 @@
-
 /* TITULO SECCION CABECERA */
 .diseno-cabecera {
     background-color: #f2f7f8; 
@@ -6,7 +5,8 @@
     border-bottom: 2px solid #3A666B; 
     position: relative;
     overflow: hidden;
-    min-height: 800px;
+    height: 100%;
+    min-height: var(--seccion-min-height, 200px);
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -65,4 +65,27 @@
 .diseno-cabecera.cabecera-con-fondo p {
     color: #ffffff;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+@media (max-width: 960px) {
+    .diseno-cabecera {
+        padding: 72px 36px;
+    }
+
+    .diseno-cabecera h1 {
+        font-size: 1.9rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .diseno-cabecera {
+        padding: 48px 20px;
+    }
+
+    .diseno-cabecera h1 {
+        font-size: 1.6rem;
+    }
+
+    .diseno-cabecera p {
+        font-size: 1rem;
+    }
 }

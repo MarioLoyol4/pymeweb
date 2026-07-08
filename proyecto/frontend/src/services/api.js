@@ -25,6 +25,16 @@ const normalizarSecciones = (data) => {
 };
 
 export const apiSaaS = {
+    obtenerSeccionesPorSlug: async (slug) => {
+        try {
+            const { data } = await apiClient.get(`/secciones/negocio/slug/${slug}`);
+            return normalizarSecciones(data);
+        } catch (error) {
+            console.error('Error en la API:', error);
+            return [];
+        }
+    },
+
     obtenerSeccionesPorNegocio: async (negocioId) => {
         try {
             const { data } = await apiClient.get(`/secciones/negocio/${negocioId}`);

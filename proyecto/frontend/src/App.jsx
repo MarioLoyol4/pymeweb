@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home.jsx';
 import EditorWeb from './pages/EditorWeb.jsx';
 import PaginaPublica from './pages/PaginaPublica';
 import Login from './pages/Login.jsx';
@@ -10,9 +11,10 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registro" element={<Registro />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/editor"
           element={(
@@ -21,7 +23,7 @@ function App() {
             </ProtectedRoute>
           )}
         />
-        <Route path="/p/:idNegocio" element={<PaginaPublica />} />
+        <Route path="/PymeWeb/:slug" element={<PaginaPublica />} />
         <Route
           path="/inventario"
           element={(

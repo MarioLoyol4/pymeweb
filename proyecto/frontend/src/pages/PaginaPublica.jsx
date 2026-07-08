@@ -1,21 +1,38 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { RenderizadorSeccion } from '../components/RenderizadorSeccion';
 import { usePaginaPublica } from '../js/pages/PaginaPublica.js';
+import { getToken } from '../services/authStorage';
+import { getSlug } from '../services/authService';
 import '../styles/pages/PaginaPublica.css';
 
 const PaginaPublica = () => {
-    const { idNegocio } = useParams();
+    const { slug } = useParams();
+    const navigate = useNavigate();
     const {
         seccionesOrdenadas,
         logoSeccion,
         barraMenuSeccion,
         combinarLogoEnMenu
-    } = usePaginaPublica(idNegocio);
+    } = usePaginaPublica(slug);
+
+    const token = getToken();
+    const slugUsuario = getSlug();
+    const esDuenio = token && slugUsuario === slug;
 
     return (
-        // TITULO LAYOUT GENERAL DE LA PAGINA PUBLICA
         <div className="public-site-wrapper">
+            {esDuenio && (
+                <div className="btn-editar-wrapper">
+                    <button
+                        className="btn-editar-pagina"
+                        onClick={() => navigate('/editor')}
+                    >
+                        ✏️ Editar página
+                    </button>
+                </div>
+            )}
+
             {seccionesOrdenadas.map(seccion => {
                 if (combinarLogoEnMenu && seccion.tipoSeccion === 'LOGO') {
                     return null;

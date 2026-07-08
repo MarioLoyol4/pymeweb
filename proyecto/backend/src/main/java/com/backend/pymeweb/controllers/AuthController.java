@@ -66,10 +66,32 @@ public class AuthController {
         usuarioRepository.save(nuevoUsuario);
 
 
+        // generar slug desde el nombre del negocio
+        // ej: "Mascotas Web" -> "mascotas-web"
+        String slugBase = request.getNombreNegocio()
+                .toLowerCase()
+                .trim()
+                .replaceAll("[áàäâ]", "a")
+                .replaceAll("[éèëê]", "e")
+                .replaceAll("[íìïî]", "i")
+                .replaceAll("[óòöô]", "o")
+                .replaceAll("[úùüû]", "u")
+                .replaceAll("[ñ]", "n")
+                .replaceAll("[^a-z0-9\\s-]", "")
+                .replaceAll("\\s+", "-");
+
+        // si el slug ya existe, agregar un numero al final
+        String slug = slugBase;
+        int contador = 1;
+        while (negocioRepository.findBySlug(slug).isPresent()) {
+            slug = slugBase + "-" + contador++;
+        }
+
         Negocio nuevoNegocio = new Negocio();
         nuevoNegocio.setUsuario(nuevoUsuario);
         nuevoNegocio.setNombreNegocio(request.getNombreNegocio());
         nuevoNegocio.setTipoRubro(request.getTipoRubro());
+        nuevoNegocio.setSlug(slug);
         negocioRepository.save(nuevoNegocio);
 
 
@@ -107,6 +129,6 @@ public class AuthController {
 
         final String jwt = jwtUtil.generateToken(userDetails.getUsername(), idDelNegocio);
 
-        return ResponseEntity.ok(new AuthResponse(jwt));
+        return ResponseEntity.ok(new AuthResponse(jwt, negocio.getSlug()));
     }
 }

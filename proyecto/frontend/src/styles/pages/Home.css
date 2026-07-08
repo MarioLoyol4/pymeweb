@@ -1,0 +1,267 @@
+/* ==========================================================================
+   HOME / LANDING PAGE CSS (Consumiendo Configuración Global)
+   ========================================================================== */
+
+/* --- Estilos Generales --- */
+.home-container {
+  font-family: var(--font-main);
+  color: var(--text-main);
+  background-color: var(--background-color);
+  min-height: 100vh;
+  padding: 20px 80px;
+  box-sizing: border-box;
+}
+
+/* --- Barra de Navegación --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  margin-bottom: 40px;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 40px;
+  height: auto;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-login {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 10px 24px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.btn-login:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-comenzar {
+  background-color: var(--primary-color);
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 12px 28px;
+  border-radius: var(--radius-lg);
+  transition: background-color var(--transition-fast);
+}
+
+.btn-comenzar:hover {
+  background-color: var(--primary-hover);
+}
+
+/* --- Sección Hero --- */
+.hero-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 60px;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 550px;
+}
+
+.hero-content h1 {
+  font-family: var(--font-title);
+  font-size: 48px;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  color: var(--text-main);
+}
+
+.hero-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 30px;
+}
+
+.btn-cta {
+  background-color: var(--secondary-color);
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 14px 35px;
+  border-radius: var(--radius-md);
+  display: inline-block;
+  box-shadow: 0 4px 15px rgba(251, 170, 31, 0.4); /* RGB mapeado desde var(--secondary-color) */
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-cta:hover {
+  background-color: var(--secondary-hover);
+  transform: translateY(-2px);
+}
+
+.hero-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-illustration {
+  max-width: 100%;
+  height: auto;
+}
+
+.benefits-section {
+  margin-top: 40px;
+}
+
+.benefits-section h2 {
+  font-family: var(--font-title);
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+.benefit-card {
+  background: var(--surface-color);
+  padding: 25px;
+  border-radius: var(--radius-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--box-shadow-smooth);
+  min-height: 140px;
+  overflow: hidden;
+}
+
+/* Corte decorativo en la esquina inferior derecha */
+.benefit-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 35px 35px;
+  border-color: transparent transparent var(--background-color) transparent;
+}
+
+.card-badge {
+  position: absolute;
+  top: 25px;
+  left: -15px;
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Colores de los círculos de iconos dinámicos vinculados a :root */
+.bg-badge-1 { background-color: var(--badge-1-bg); }
+.bg-badge-2 { background-color: var(--badge-2-bg); }
+.bg-badge-3 { background-color: var(--badge-3-bg); }
+
+.card-badge img {
+  width: 24px;
+  height: 24px;
+}
+
+.card-content {
+  margin-left: 45px;
+  padding-right: 30px;
+}
+
+.card-content h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.card-content p {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.card-number {
+  position: absolute;
+  right: 25px;
+  bottom: 20px;
+  font-size: 32px;
+  font-weight: 800;
+  font-family: var(--font-main);
+  opacity: 0.8;
+  z-index: 1;
+}
+
+/* Colores de los números dinámicos vinculados a :root */
+.color-badge-1 { color: var(--badge-1-num); }
+.color-badge-2 { color: var(--badge-2-num); }
+.color-badge-3 { color: var(--badge-3-num); }
+
+/* --- Footer --- */
+.footer {
+  border-top: 1px solid var(--border-color);
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.footer-logo img {
+  width: 28px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* --- Responsivo básico --- */
+@media (max-width: 992px) {
+  .home-container { padding: 20px; }
+  .hero-section { flex-direction: column; text-align: center; }
+  .hero-content { max-width: 100%; }
+  .benefits-grid { grid-template-columns: 1fr; }
+}

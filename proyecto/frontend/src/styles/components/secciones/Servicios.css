@@ -1,12 +1,12 @@
 /* TITULO SECCION SERVICIOS */
 .diseno-servicios {
-    background-color: #ffffff;
+    background-color: var(--color-fondo, #ffffff);
     padding: 40px 30px;
 }
 
 /* TITULO HEADER SECCION */
 .servicios-header h2 {
-    color: #3A666B;
+    color: var(--color-titulo, #3A666B);
     margin: 0 0 10px 0;
     font-size: 1.8rem;
     font-weight: 800;
@@ -15,7 +15,7 @@
 
 .servicios-header p {
     margin: 0 0 20px 0;
-    color: #5b6b6e;
+    color: var(--color-texto, #5b6b6e);
     max-width: 680px;
     text-align: center;
     margin-left: auto;

@@ -1,12 +1,12 @@
 /* TITULO SECCION ACERCA DE NOSOTROS */
 .diseno-conocenos {
-    background-color: #ffffff;
+    background-color: var(--color-fondo, #ffffff);
     padding: 40px 30px;
 }
 
 /* TITULO HEADER SECCION */
 .conocenos-header h2 {
-    color: #3A666B;
+    color: var(--color-titulo, #3A666B);
     margin: 0 0 15px 0;
     font-size: 1.8rem;
     font-weight: 800;
@@ -72,4 +72,23 @@
     margin: 0;
     color: #d8e9e9;
     line-height: 1.4;
+}
+@media (max-width: 960px) {
+    .conocenos-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .diseno-conocenos {
+        padding: 32px 20px;
+    }
+
+    .conocenos-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .conocenos-header h2 {
+        font-size: 1.5rem;
+    }
 }

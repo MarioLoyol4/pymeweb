@@ -172,6 +172,8 @@ export const useEditorWeb = () => {
     const [serviciosEdicion, setServiciosEdicion] = useState([]);
     const [productosEdicion, setProductosEdicion] = useState([]);
     const [enlacesEdicion, setEnlacesEdicion] = useState([]);
+    const [coloresEdicion, setColoresEdicion] = useState({ fondo: '', textoTitulo: '', textoSecundario: '' });
+    const [estilosTextoEdicion, setEstilosTextoEdicion] = useState({ alineacionTitulo: '', transformacionTitulo: '', alineacionTexto: '', transformacionTexto: '' });
 
     const [botonesSuperiores, setBotonesSuperiores] = useState(BOTONES_BASE);
 
@@ -294,11 +296,58 @@ export const useEditorWeb = () => {
             });
         }
         setDatosEdicion(datos);
+
+        const computeDefaultColors = (tipo, datosSeccion) => {
+            const t = String(tipo || '').toUpperCase();
+            
+            if (t === 'CABECERA') {
+                
+                if (datosSeccion.imagenFondo) {
+                    return { fondo: '', textoTitulo: '#ffffff', textoSecundario: '#ffffff' };
+                }
+                return { fondo: '#f2f7f8', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            }
+            if (t === 'BARRA_MENU') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'ACERCA_DE_NOSOTROS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'SERVICIOS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            if (t === 'PRODUCTOS') return { fondo: '#ffffff', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+            
+            return { fondo: '', textoTitulo: '#3A666B', textoSecundario: '#666666' };
+        };
+
+        if (datos.colores) {
+            setColoresEdicion({
+                fondo: datos.colores.fondo || computeDefaultColors(seccion.tipoSeccion, datos).fondo || '',
+                textoTitulo: datos.colores.textoTitulo || computeDefaultColors(seccion.tipoSeccion, datos).textoTitulo || '',
+                textoSecundario: datos.colores.textoSecundario || computeDefaultColors(seccion.tipoSeccion, datos).textoSecundario || ''
+            });
+        } else {
+            setColoresEdicion(computeDefaultColors(seccion.tipoSeccion, datos));
+        }
+
+        if (datos.estilosTexto) {
+            setEstilosTextoEdicion({
+                alineacionTitulo: datos.estilosTexto.alineacionTitulo || '',
+                transformacionTitulo: datos.estilosTexto.transformacionTitulo || '',
+                alineacionTexto: datos.estilosTexto.alineacionTexto || '',
+                transformacionTexto: datos.estilosTexto.transformacionTexto || ''
+            });
+        } else {
+            setEstilosTextoEdicion({ alineacionTitulo: '', transformacionTitulo: '', alineacionTexto: '', transformacionTexto: '' });
+        }
     };
 
     const manejarCambio = (e) => {
         const { name, value } = e.target;
         setDatosEdicion((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const manejarCambioColores = (campo, valor) => {
+        setColoresEdicion((prev) => ({ ...prev, [campo]: valor }));
+    };
+
+    const manejarCambioEstilosTexto = (campo, valor) => {
+        setEstilosTextoEdicion((prev) => ({ ...prev, [campo]: valor }));
     };
 
     const manejarCambioTarjeta = (index, campo, valor) => {
@@ -403,6 +452,10 @@ export const useEditorWeb = () => {
             }));
             delete datosLimpios.productosTexto;
         }
+
+        datosLimpios.colores = {...coloresEdicion};
+        datosLimpios.estilosTexto = {...estilosTextoEdicion};
+        
         const datosParaEnviar = { ...seccionSeleccionada, contenidoJson: JSON.stringify(datosLimpios) };
         const respuesta = await apiSaaS.actualizarSeccion(seccionSeleccionada.idSeccion, datosParaEnviar);
         if (respuesta) { cargarDatos(); alert("¡Cambios guardados!"); }
@@ -437,8 +490,8 @@ export const useEditorWeb = () => {
             mapaUrl: ""
         };
         if (tipoFormateado === 'REDES_SOCIALES') contenidoBase = {
-            facebook: "https://facebook.com/miempresa",
-            instagram: "https://instagram.com/miempresa",
+            facebook: "https://facebook.com/",
+            instagram: "https://instagram.com/",
             whatsapp: "+56 9 1111 1111"
         };
 
@@ -499,6 +552,10 @@ export const useEditorWeb = () => {
         dragOverItem,
         seleccionarSeccion,
         manejarCambio,
+        manejarCambioColor: manejarCambioColores,
+        coloresEdicion,
+        estilosTextoEdicion,
+        manejarCambioEstilosTexto,
         manejarCambioTarjeta,
         agregarTarjeta,
         eliminarTarjeta,

@@ -1,8 +1,10 @@
 package com.backend.pymeweb.controllers;
 
 import com.backend.pymeweb.models.ConfiguracionWeb;
+import com.backend.pymeweb.models.Negocio;
 import com.backend.pymeweb.models.Seccion;
 import com.backend.pymeweb.repositories.ConfiguracionWebRepository;
+import com.backend.pymeweb.repositories.NegocioRepository;
 import com.backend.pymeweb.repositories.SeccionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class SeccionController {
 
     @Autowired
     private ConfiguracionWebRepository configuracionWebRepository;
+
+    @Autowired
+    private NegocioRepository negocioRepository;
 
     @PostMapping("/negocio/{idNegocio}")
     public ResponseEntity<?> crearSeccionParaNegocio(@PathVariable Long idNegocio,@RequestBody Seccion nuevaSeccion){
@@ -55,7 +60,7 @@ public class SeccionController {
         return ResponseEntity.ok(seccionRepository.findAll());
     }
 
-//  PUT edita la seccion especifica
+    //  PUT edita la seccion especifica
     @PutMapping("/{idSeccion}")
     public ResponseEntity<?> editarSeccion(@PathVariable Long idSeccion, @RequestBody Seccion seccionActualizada){
         return seccionRepository.findById(idSeccion)
@@ -69,7 +74,7 @@ public class SeccionController {
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
-//  DELETE elimina la seccion por id
+    //  DELETE elimina la seccion por id
     @DeleteMapping("/{idSeccion}")
     public ResponseEntity<?> eliminarSeccion(@PathVariable Long idSeccion) {
 
@@ -82,6 +87,19 @@ public class SeccionController {
 //          Si no existe se manda un error 404 not found
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/negocio/slug/{slug}")
+    public ResponseEntity<List<Seccion>> obtenerSeccionesPorSlug(@PathVariable String slug) {
+        Negocio negocio = negocioRepository.findBySlug(slug).orElse(null);
+        if (negocio == null) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Seccion> secciones = seccionRepository.obtenerSeccionesPorNegocio(negocio.getIdNegocio());
+        if (secciones.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(secciones);
     }
 
     @GetMapping("/negocio/{idNegocio}")
