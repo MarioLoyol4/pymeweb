@@ -6,6 +6,7 @@ import { Servicios } from '../../components/secciones/Servicios';
 import { Contacto } from '../../components/secciones/Contacto';
 import { Redes_sociales } from '../../components/secciones/Redes_sociales';
 import { Productos } from '../../components/secciones/Productos';
+import SharedFooter from '../../components/SharedFooter';
 
 export const resolverRenderizadoSeccion = (tipoSeccion, contenidoJson, logoContenidoJson = null) => {
     const contenido = JSON.parse(contenidoJson);
@@ -26,6 +27,8 @@ export const resolverRenderizadoSeccion = (tipoSeccion, contenidoJson, logoConte
             return { Componente: Productos, props: { contenido } };
         case 'REDES_SOCIALES':
             return { Componente: Redes_sociales, props: { contenido } };
+        case 'PIE_DE_PAGINA':
+            return { Componente: SharedFooter, props: {} };
         case 'CONTACTO':
             return { Componente: Contacto, props: { contenido } };
         default:

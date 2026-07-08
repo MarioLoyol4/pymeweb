@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import '../styles/pages/Home.css';
-import { Logo } from '../components/Logo'; 
+import SharedFooter from '../components/SharedFooter';
+import { Logo } from '../components/Logo';
 
 function Home() {
   return (
@@ -74,13 +75,7 @@ function Home() {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-logo">
-          <Logo width="40px" height="40px" className="logo-img" />
-          <span>PymeWeb</span>
-        </div>
-        <p className="footer-copyright">Derechos reservados @ 2026 PymeWeb</p>
-      </footer>
+      <SharedFooter />
     </div>
   );
 }

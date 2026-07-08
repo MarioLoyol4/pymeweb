@@ -8,6 +8,7 @@ import PaginaPublica from '../pages/PaginaPublica.jsx';
 // Mocks de dependencias
 vi.mock('react-router-dom', () => ({
     useParams: vi.fn(),
+    useNavigate: vi.fn(),
 }));
 
 vi.mock('../js/pages/PaginaPublica.js', () => ({
@@ -61,6 +62,7 @@ describe('PaginaPublica Component - Test de Cobertura Completa', () => {
         expect(screen.getByText('Seccion: LOGO')).toBeDefined();
         expect(screen.getByText('Seccion: BARRA_MENU')).toBeDefined();
         expect(screen.getByText('Seccion: HERO')).toBeDefined();
+        expect(screen.getByText('Derechos reservados @ 2026 PymeWeb')).toBeDefined();
     });
 
     it('debe omitir la sección LOGO e inyectar el logo en BARRA_MENU si combinarLogoEnMenu es verdadero', () => {
@@ -82,5 +84,6 @@ describe('PaginaPublica Component - Test de Cobertura Completa', () => {
         expect(screen.getByText('Seccion: BARRA_MENU')).toBeDefined();
         expect(screen.getByText('Contenido: Menu Combinado')).toBeDefined();
         expect(screen.getByText('Logo Combinado: logo.png')).toBeDefined();
+        expect(screen.getByText('Derechos reservados @ 2026 PymeWeb')).toBeDefined();
     });
 });

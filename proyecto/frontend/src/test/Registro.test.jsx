@@ -36,7 +36,7 @@ describe('Registro Component - Test de Cobertura Completa', () => {
     useRegistro.mockReturnValue(mockHookBase);
     renderConRouter(<Registro />);
 
-    expect(screen.getByText('Pymeweb')).toBeDefined();
+    expect(screen.getAllByText('PymeWeb').length).toBeGreaterThanOrEqual(2);
     expect(screen.getByText('Abre tu página web en solo dos pasos.')).toBeDefined();
     expect(screen.getByText('Registro guiado')).toBeDefined();
     expect(screen.getByText('Plantillas inteligentes')).toBeDefined();
