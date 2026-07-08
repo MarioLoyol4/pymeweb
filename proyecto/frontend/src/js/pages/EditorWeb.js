@@ -6,8 +6,8 @@ const BOTON_LOGO = "LOGO";
 
 const BOTONES_BASE = [
     BOTON_LOGO, "BARRA MENÚ", "CABECERA", "ACERCA DE NOSOTROS",
-    "SERVICIOS", "CONTACTO", "FRASES", "PIE DE PÁGINA",
-    "REDES SOCIALES", "PRODUCTOS"
+    "SERVICIOS", "CONTACTO", "REDES SOCIALES", "PIE DE PÁGINA",
+    "PRODUCTOS"
 ];
 
 const TIPO_POR_BOTON = {
@@ -17,7 +17,6 @@ const TIPO_POR_BOTON = {
     "ACERCA DE NOSOTROS": "ACERCA_DE_NOSOTROS",
     "SERVICIOS": "SERVICIOS",
     "CONTACTO": "CONTACTO",
-    "FRASES": "FRASES",
     "PIE DE PÁGINA": "PIE_DE_PAGINA",
     "REDES SOCIALES": "REDES_SOCIALES",
     "PRODUCTOS": "PRODUCTOS"
@@ -26,6 +25,8 @@ const TIPO_POR_BOTON = {
 const BOTON_POR_TIPO = Object.fromEntries(
     Object.entries(TIPO_POR_BOTON).map(([label, tipo]) => [tipo, label])
 );
+
+const TIPOS_EDITABLES = new Set(Object.values(TIPO_POR_BOTON));
 
 const obtenerTipoSeccion = (nombreBoton) => (
     TIPO_POR_BOTON[nombreBoton] || nombreBoton.replace(/ /g, '_').toUpperCase()
@@ -189,7 +190,9 @@ export const useEditorWeb = () => {
         }
 
         const datos = await apiSaaS.obtenerSeccionesPorNegocio(negocioId);
-        const datosArray = Array.isArray(datos) ? datos : [];
+        const datosArray = (Array.isArray(datos) ? datos : []).filter(
+            (seccion) => TIPOS_EDITABLES.has(seccion?.tipoSeccion)
+        );
         setSecciones(datosArray);
 
         if (datosArray.length > 0) {
