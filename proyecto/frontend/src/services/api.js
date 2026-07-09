@@ -68,3 +68,58 @@ export const apiSaaS = {
         }
     }
 };
+export const apiProductos = {
+   
+    obtenerProductos: async () => {
+        try {
+            const { data } = await apiClient.get('/productos');
+            return data;
+        } catch (error) {
+            console.error('Error al obtener productos:', error);
+            return [];
+        }
+    },
+
+   
+    obtenerProductoPorId: async (id) => {
+        try {
+            const { data } = await apiClient.get(`/productos/${id}`);
+            return data;
+        } catch (error) {
+            console.error('Error al obtener producto:', error);
+            return null;
+        }
+    },
+
+    
+    crearProducto: async (nuevoProducto) => {
+        try {
+            const { data } = await apiClient.post('/productos', nuevoProducto);
+            return data;
+        } catch (error) {
+            console.error('Error al crear producto:', error);
+            return null;
+        }
+    },
+
+    actualizarProducto: async (id, productoActualizado) => {
+        try {
+            const { data } = await apiClient.put(`/productos/${id}`, productoActualizado);
+            return data;
+        } catch (error) {
+            console.error('Error al actualizar producto:', error);
+            return null;
+        }
+    },
+
+
+    eliminarProducto: async (id) => {
+        try {
+            await apiClient.delete(`/productos/${id}`);
+            return true;
+        } catch (error) {
+            console.error('Error al eliminar producto:', error);
+            return false;
+        }
+    }
+};

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { RenderizadorSeccion } from '../components/RenderizadorSeccion';
+import SharedFooter from '../components/SharedFooter';
 import { usePaginaPublica } from '../js/pages/PaginaPublica.js';
 import { getToken } from '../services/authStorage';
 import { getSlug } from '../services/authService';
@@ -34,6 +35,9 @@ const PaginaPublica = () => {
             )}
 
             {seccionesOrdenadas.map(seccion => {
+                if (seccion.tipoSeccion === 'PIE_DE_PAGINA') {
+                    return null;
+                }
                 if (combinarLogoEnMenu && seccion.tipoSeccion === 'LOGO') {
                     return null;
                 }
@@ -56,6 +60,8 @@ const PaginaPublica = () => {
                     </div>
                 );
             })}
+
+            <SharedFooter />
         </div>
     );
 };

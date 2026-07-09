@@ -12,7 +12,6 @@ const EditorWeb = () => {
         datosEdicion,
         tarjetasEdicion,
         serviciosEdicion,
-        productosEdicion,
         enlacesEdicion,
         coloresEdicion,
         estilosTextoEdicion,
@@ -29,9 +28,6 @@ const EditorWeb = () => {
         manejarCambioServicio,
         agregarServicio,
         eliminarServicio,
-        manejarCambioProducto,
-        agregarProducto,
-        eliminarProducto,
         manejarCambioEnlace,
         agregarEnlace,
         eliminarEnlace,
@@ -294,47 +290,19 @@ const EditorWeb = () => {
                                             AGREGAR SERVICIO
                                         </button>
                                     )}
-                                    {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && productosEdicion.map((producto, index) => (
-                                        <div className="input-group" key={`producto-${index}`}>
-                                            <label className="tools-label">Producto #{index + 1} - titulo</label>
-                                            <input
-                                                className="input-editor"
-                                                value={producto.titulo}
-                                                onChange={(e) => manejarCambioProducto(index, 'titulo', e.target.value)}
-                                            />
-                                            <label className="tools-label">Producto #{index + 1} - descripcion</label>
-                                            <input
-                                                className="input-editor"
-                                                value={producto.descripcion}
-                                                onChange={(e) => manejarCambioProducto(index, 'descripcion', e.target.value)}
-                                            />
-                                            <label className="tools-label">Producto #{index + 1} - precio</label>
-                                            <input
-                                                className="input-editor"
-                                                value={producto.precio}
-                                                onChange={(e) => manejarCambioProducto(index, 'precio', e.target.value)}
-                                                placeholder="$10.000"
-                                            />
-                                            <label className="tools-label">Producto #{index + 1} - imagen (URL)</label>
-                                            <input
-                                                className="input-editor"
-                                                value={producto.imagen}
-                                                onChange={(e) => manejarCambioProducto(index, 'imagen', e.target.value)}
-                                                placeholder="https://..."
-                                            />
+                                    {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && (
+                                        <div className="input-group" style={{ marginTop: '10px' }}>
+                                            <p style={{ margin: '0 0 12px', color: '#3A666B', lineHeight: 1.5 }}>
+                                                Los productos se gestionan desde el inventario. Desde ahí puedes crear, editar y eliminar productos.
+                                            </p>
                                             <button
                                                 type="button"
                                                 className="btn-guardar"
-                                                onClick={() => eliminarProducto(index)}
+                                                onClick={() => navigate('/inventario')}
                                             >
-                                                ELIMINAR PRODUCTO
+                                                IR AL INVENTARIO
                                             </button>
                                         </div>
-                                    ))}
-                                    {seccionSeleccionada?.tipoSeccion === 'PRODUCTOS' && (
-                                        <button type="button" className="btn-guardar" onClick={agregarProducto}>
-                                            AGREGAR PRODUCTO
-                                        </button>
                                     )}
                                 </div>
                             </details>

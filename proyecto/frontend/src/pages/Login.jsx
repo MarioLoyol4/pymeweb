@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLogin } from '../js/pages/Login.js';
+import SharedFooter from '../components/SharedFooter';
 import '../styles/pages/Auth.css';
 
 const Login = () => {
@@ -18,8 +19,9 @@ const Login = () => {
       <div className="auth-orb orb-one" />
       <div className="auth-orb orb-two" />
 
-      {/* Contenedor principal */}
-      <div className="auth-container">
+      <div className="auth-page-content">
+        {/* Contenedor principal */}
+        <div className="auth-container">
 
         {/* ================= HERO IZQUIERDO ================= */}
         <section className="auth-hero">
@@ -193,8 +195,12 @@ const Login = () => {
 
         </section>
 
+        </div>
+
+        <SharedFooter />
       </div>
     </div>
+    
   );
 };
 

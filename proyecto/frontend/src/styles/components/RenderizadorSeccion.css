@@ -2,6 +2,7 @@
 /* Aplicar comportamiento flex solo a secciones que no sean la barra de menú
    para no romper su diseño original */
 .seccion-wrapper-personalizada:not(.tipo-BARRA_MENU) {
+	position: relative;
 	box-sizing: border-box;
 	background-color: var(--color-fondo, transparent);
 	color: var(--color-texto, inherit);

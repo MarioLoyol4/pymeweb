@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useRegistro } from '../js/pages/Registro.js';
+import SharedFooter from '../components/SharedFooter';
 import '../styles/pages/Auth.css';
 
 const Registro = () => {
@@ -19,6 +20,8 @@ const Registro = () => {
     <div className="auth-page">
       <div className="auth-orb orb-one" />
       <div className="auth-orb orb-two" />
+
+      <div className="auth-page-content">
 
       <div className="auth-container">
 
@@ -328,6 +331,9 @@ const Registro = () => {
 
         </section>
 
+      </div>
+
+      <SharedFooter />
       </div>
     </div>
   );
